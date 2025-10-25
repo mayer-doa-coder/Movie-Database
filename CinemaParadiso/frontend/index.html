@@ -149,27 +149,111 @@ Example: SELECT * FROM movies WHERE rating > 8.0 ORDER BY rating DESC"></textare
             <!-- Advanced Queries Tab -->
             <div class="tab-content" id="advanced">
                 <h2>Advanced SQL Operations</h2>
-                <p class="info-text">Explore advanced SQL operations: JOINs, Subqueries, Aggregations, etc.</p>
+                <p class="info-text">Comprehensive SQL operations - fully operational with real database data</p>
 
-                <div class="operations-grid">
-                    <button class="operation-btn" onclick="runAdvancedQuery('distinct')">DISTINCT</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('between')">BETWEEN</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('in')">IN Clause</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('like')">LIKE Pattern</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('aggregates')">Aggregates</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('group_by')">GROUP BY</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('having')">HAVING</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('inner_join')">INNER JOIN</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('left_join')">LEFT JOIN</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('subquery_where')">Subquery WHERE</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('subquery_select')">Subquery SELECT</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('union')">UNION</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('union_all')">UNION ALL</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('cross_join')">CROSS JOIN</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('self_join')">SELF JOIN</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('order_by')">ORDER BY</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('complex_query')">Complex Query</button>
-                    <button class="operation-btn" onclick="runAdvancedQuery('top_rated_by_genre')">Top by Genre</button>
+                <div class="section">
+                    <h3>📋 SELECT Operations</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('distinct')">DISTINCT</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('distinct_all')">ALL vs DISTINCT</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('aliases')">Aliases (AS)</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🔍 WHERE Clause</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('between')">BETWEEN</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('in')">IN Clause</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('like')">LIKE Pattern</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('not_null')">NOT NULL</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📊 Aggregate Functions</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('aggregates')">All Aggregates</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('count')">COUNT</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>📦 Grouping & Filtering</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('group_by')">GROUP BY</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('having')">HAVING</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🔄 Sorting</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('order_by')">ORDER BY</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('order_asc_desc')">ASC vs DESC</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🔗 JOIN Operations</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('inner_join')">INNER JOIN</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('left_join')">LEFT JOIN</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('right_join')">RIGHT JOIN</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('cross_join')">CROSS JOIN</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('self_join')">SELF JOIN</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('natural_join')">USING Clause</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('multiple_joins')">Multiple JOINs</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🎯 Subqueries</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('subquery_where')">Subquery WHERE</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('subquery_select')">Subquery SELECT</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('subquery_from')">Subquery FROM</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('exists_subquery')">EXISTS</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('not_exists_subquery')">NOT EXISTS</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🔀 Set Operations</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('union')">UNION</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('union_all')">UNION ALL</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🏗️ Common Table Expression</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('cte')">CTE (WITH)</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('cte_multiple')">Multiple CTEs</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>⚡ Complex & Advanced</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('complex_query')">Full SQL Syntax</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('top_rated_by_genre')">Correlated Subquery</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('celebrity_statistics')">Celebrity Stats</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('rating_categories')">CASE Statement</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('genre_comparison')">Genre Analysis</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('temporal_analysis')">Temporal Analysis</button>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>🛠️ Utility Functions</h3>
+                    <div class="operations-grid">
+                        <button class="operation-btn" onclick="runAdvancedQuery('null_handling')">NULL Handling</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('string_functions')">String Functions</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('mathematical_operations')">Math Operations</button>
+                        <button class="operation-btn" onclick="runAdvancedQuery('insert_select_demo')">INSERT SELECT</button>
+                    </div>
                 </div>
 
                 <div id="advancedResult" class="query-result"></div>

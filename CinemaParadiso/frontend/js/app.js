@@ -649,29 +649,87 @@ function clearQuery() {
 // Advanced Queries
 async function runAdvancedQuery(operation) {
     try {
+        const container = document.getElementById('advancedResult');
+        container.innerHTML = '<div class="loading">Executing query...</div>';
+        
         const res = await fetch(`${API_BASE}/advanced-queries.php?operation=${operation}`);
         const data = await res.json();
         
-        const container = document.getElementById('advancedResult');
-        
         if (data.success) {
-            const table = createTable(data.data);
-            container.innerHTML = `
-                <div style="margin-bottom: 15px;">
-                    <h3>Operation: ${data.operation}</h3>
-                    <p>Results: ${Array.isArray(data.data) ? data.data.length : 1} row(s)</p>
-                </div>
-                ${table || `<pre>${JSON.stringify(data.data, null, 2)}</pre>`}
-            `;
+            let content = '';
+            
+            // Handle different data structures
+            if (Array.isArray(data.data)) {
+                const table = createTable(data.data);
+                content = `
+                    <div class="query-info">
+                        <h3>✅ ${data.operation}</h3>
+                        <div class="info-badges">
+                            <span class="badge badge-success">Success</span>
+                            <span class="badge badge-info">${data.data.length} rows returned</span>
+                        </div>
+                    </div>
+                    ${table}
+                `;
+            } else if (typeof data.data === 'object') {
+                // Handle complex objects (like aggregates, comparisons)
+                content = `
+                    <div class="query-info">
+                        <h3>✅ ${data.operation}</h3>
+                        <div class="info-badges">
+                            <span class="badge badge-success">Success</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Display nested objects nicely
+                for (const [key, value] of Object.entries(data.data)) {
+                    if (Array.isArray(value)) {
+                        content += `<h4>${key.replace(/_/g, ' ').toUpperCase()}</h4>`;
+                        content += createTable(value);
+                    } else if (typeof value === 'object') {
+                        content += `<h4>${key.replace(/_/g, ' ').toUpperCase()}</h4>`;
+                        content += `<div class="stats-grid">${createStatsCards(value)}</div>`;
+                    } else {
+                        content += `<div class="stat-item"><strong>${key}:</strong> ${value}</div>`;
+                    }
+                }
+            }
+            
+            container.innerHTML = content;
         } else {
             container.innerHTML = `
-                <div style="color: #ef4444;">Error: ${data.error}</div>
+                <div class="query-info error">
+                    <h3>❌ Error</h3>
+                    <p>${data.error}</p>
+                </div>
             `;
         }
     } catch (error) {
         console.error('Error running advanced query:', error);
+        document.getElementById('advancedResult').innerHTML = `
+            <div class="query-info error">
+                <h3>❌ Error</h3>
+                <p>${error.message}</p>
+            </div>
+        `;
     }
 }
+
+// Helper function to create stats cards from object
+function createStatsCards(obj) {
+    let html = '';
+    for (const [key, value] of Object.entries(obj)) {
+        html += `
+            <div class="stat-card-mini">
+                <div class="stat-label">${key.replace(/_/g, ' ')}</div>
+                <div class="stat-value">${value !== null ? value : 'N/A'}</div>
+            </div>
+        `;
+    }
+    return html;
+}
+
 
 // SQL Terminal
 function toggleTerminal() {

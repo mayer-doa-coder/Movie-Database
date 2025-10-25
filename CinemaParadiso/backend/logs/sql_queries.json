@@ -1,391 +1,5 @@
 [
     {
-        "id": "68fcc280e7b7c",
-        "timestamp": 1761395328.949122,
-        "datetime": "2025-10-25 12:28:48",
-        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc281200a9",
-        "timestamp": 1761395329.131245,
-        "datetime": "2025-10-25 12:28:49",
-        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc282428c4",
-        "timestamp": 1761395330.272596,
-        "datetime": "2025-10-25 12:28:50",
-        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2833fc56",
-        "timestamp": 1761395331.261211,
-        "datetime": "2025-10-25 12:28:51",
-        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc28526f8c",
-        "timestamp": 1761395333.159631,
-        "datetime": "2025-10-25 12:28:53",
-        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc28b6a433",
-        "timestamp": 1761395339.435256,
-        "datetime": "2025-10-25 12:28:59",
-        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc28f821df",
-        "timestamp": 1761395343.532964,
-        "datetime": "2025-10-25 12:29:03",
-        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc293e5287",
-        "timestamp": 1761395347.938641,
-        "datetime": "2025-10-25 12:29:07",
-        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2a2cd750",
-        "timestamp": 1761395362.841556,
-        "datetime": "2025-10-25 12:29:22",
-        "query": "SELECT DISTINCT genre FROM movies",
-        "raw_query": "SELECT DISTINCT genre FROM movies",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2af5644a",
-        "timestamp": 1761395375.353357,
-        "datetime": "2025-10-25 12:29:35",
-        "query": "SELECT * FROM movies WHERE release_date BETWEEN '2000-01-01' AND '2020-12-31'",
-        "raw_query": "SELECT * FROM movies WHERE release_date BETWEEN '2000-01-01' AND '2020-12-31'",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2b462f5d",
-        "timestamp": 1761395380.405346,
-        "datetime": "2025-10-25 12:29:40",
-        "query": "SELECT DISTINCT genre FROM movies",
-        "raw_query": "SELECT DISTINCT genre FROM movies",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2b6bf998",
-        "timestamp": 1761395382.784795,
-        "datetime": "2025-10-25 12:29:42",
-        "query": "SELECT genre, COUNT(*) as count, AVG(rating) as avg_rating \r\n                    FROM movies \r\n                    GROUP BY genre \r\n                    ORDER BY count DESC",
-        "raw_query": "SELECT genre, COUNT(*) as count, AVG(rating) as avg_rating \r\n                    FROM movies \r\n                    GROUP BY genre \r\n                    ORDER BY count DESC",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2bab8df9",
-        "timestamp": 1761395386.757243,
-        "datetime": "2025-10-25 12:29:46",
-        "query": "SELECT genre, COUNT(*) as count \r\n                    FROM movies \r\n                    GROUP BY genre \r\n                    HAVING count > 1",
-        "raw_query": "SELECT genre, COUNT(*) as count \r\n                    FROM movies \r\n                    GROUP BY genre \r\n                    HAVING count > 1",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2bd984a4",
-        "timestamp": 1761395389.623783,
-        "datetime": "2025-10-25 12:29:49",
-        "query": "SELECT m.title, c.name as director \r\n                    FROM movies m \r\n                    INNER JOIN celebrities c ON m.director_id = c.celebrity_id",
-        "raw_query": "SELECT m.title, c.name as director \r\n                    FROM movies m \r\n                    INNER JOIN celebrities c ON m.director_id = c.celebrity_id",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2c1e1764",
-        "timestamp": 1761395393.923496,
-        "datetime": "2025-10-25 12:29:53",
-        "query": "SELECT m.title, c.name as director \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id",
-        "raw_query": "SELECT m.title, c.name as director \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2c361b00",
-        "timestamp": 1761395395.400132,
-        "datetime": "2025-10-25 12:29:55",
-        "query": "SELECT * FROM movies \r\n                    WHERE rating > (SELECT AVG(rating) FROM movies)",
-        "raw_query": "SELECT * FROM movies \r\n                    WHERE rating > (SELECT AVG(rating) FROM movies)",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2c7e9947",
-        "timestamp": 1761395399.956747,
-        "datetime": "2025-10-25 12:29:59",
-        "query": "SELECT u1.username as follower, u2.username as following \r\n                    FROM user_follows uf \r\n                    JOIN users u1 ON uf.follower_id = u1.user_id \r\n                    JOIN users u2 ON uf.following_id = u2.user_id",
-        "raw_query": "SELECT u1.username as follower, u2.username as following \r\n                    FROM user_follows uf \r\n                    JOIN users u1 ON uf.follower_id = u1.user_id \r\n                    JOIN users u2 ON uf.following_id = u2.user_id",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2ca7100d",
-        "timestamp": 1761395402.462879,
-        "datetime": "2025-10-25 12:30:02",
-        "query": "SELECT u1.username as follower, u2.username as following \r\n                    FROM user_follows uf \r\n                    JOIN users u1 ON uf.follower_id = u1.user_id \r\n                    JOIN users u2 ON uf.following_id = u2.user_id",
-        "raw_query": "SELECT u1.username as follower, u2.username as following \r\n                    FROM user_follows uf \r\n                    JOIN users u1 ON uf.follower_id = u1.user_id \r\n                    JOIN users u2 ON uf.following_id = u2.user_id",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2cb902c3",
-        "timestamp": 1761395403.590534,
-        "datetime": "2025-10-25 12:30:03",
-        "query": "SELECT m.title, c.name \r\n                    FROM (SELECT * FROM movies LIMIT 2) m \r\n                    CROSS JOIN (SELECT * FROM celebrities LIMIT 2) c",
-        "raw_query": "SELECT m.title, c.name \r\n                    FROM (SELECT * FROM movies LIMIT 2) m \r\n                    CROSS JOIN (SELECT * FROM celebrities LIMIT 2) c",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2cdf07b8",
-        "timestamp": 1761395405.98502,
-        "datetime": "2025-10-25 12:30:05",
-        "query": "SELECT genre, title, rating \r\n                    FROM movies m1 \r\n                    WHERE rating = (\r\n                        SELECT MAX(rating) \r\n                        FROM movies m2 \r\n                        WHERE m1.genre = m2.genre\r\n                    )",
-        "raw_query": "SELECT genre, title, rating \r\n                    FROM movies m1 \r\n                    WHERE rating = (\r\n                        SELECT MAX(rating) \r\n                        FROM movies m2 \r\n                        WHERE m1.genre = m2.genre\r\n                    )",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2cfdc69c",
-        "timestamp": 1761395407.902816,
-        "datetime": "2025-10-25 12:30:07",
-        "query": "SELECT \r\n                    m.title,\r\n                    m.rating,\r\n                    c.name as director,\r\n                    COUNT(mc.cast_id) as cast_count,\r\n                    (SELECT AVG(rating) FROM movies) as avg_rating\r\n                FROM movies m\r\n                LEFT JOIN celebrities c ON m.director_id = c.celebrity_id\r\n                LEFT JOIN movie_cast mc ON m.movie_id = mc.movie_id\r\n                WHERE m.rating > 8.0\r\n                GROUP BY m.movie_id, m.title, m.rating, c.name\r\n                HAVING cast_count > 0\r\n                ORDER BY m.rating DESC\r\n                LIMIT 10",
-        "raw_query": "SELECT \r\n                    m.title,\r\n                    m.rating,\r\n                    c.name as director,\r\n                    COUNT(mc.cast_id) as cast_count,\r\n                    (SELECT AVG(rating) FROM movies) as avg_rating\r\n                FROM movies m\r\n                LEFT JOIN celebrities c ON m.director_id = c.celebrity_id\r\n                LEFT JOIN movie_cast mc ON m.movie_id = mc.movie_id\r\n                WHERE m.rating > 8.0\r\n                GROUP BY m.movie_id, m.title, m.rating, c.name\r\n                HAVING cast_count > 0\r\n                ORDER BY m.rating DESC\r\n                LIMIT 10",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2d27e686",
-        "timestamp": 1761395410.51777,
-        "datetime": "2025-10-25 12:30:10",
-        "query": "SELECT title, rating, \r\n                    (SELECT AVG(rating) FROM movies) as avg_rating \r\n                    FROM movies",
-        "raw_query": "SELECT title, rating, \r\n                    (SELECT AVG(rating) FROM movies) as avg_rating \r\n                    FROM movies",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2d8a511f",
-        "timestamp": 1761395416.676141,
-        "datetime": "2025-10-25 12:30:16",
-        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc2e13b550",
-        "timestamp": 1761395425.243027,
-        "datetime": "2025-10-25 12:30:25",
-        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc307bac28",
-        "timestamp": 1761395463.764976,
-        "datetime": "2025-10-25 12:31:03",
-        "query": "INSERT INTO movies (title, release_date, duration, plot_summary, \r\n                    poster_url, trailer_url, genre, language, country, rating, director_id) \r\n                    VALUES ('po', '2025-10-07', '120', 'hejhe', , , 'drama', 'hindi', 'india', '7', )",
-        "raw_query": "INSERT INTO movies (title, release_date, duration, plot_summary, \r\n                    poster_url, trailer_url, genre, language, country, rating, director_id) \r\n                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        "params": [
-            "po",
-            "2025-10-07",
-            "120",
-            "hejhe",
-            null,
-            null,
-            "drama",
-            "hindi",
-            "india",
-            "7",
-            null
-        ],
-        "type": "INSERT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc30ea794a",
-        "timestamp": 1761395470.686414,
-        "datetime": "2025-10-25 12:31:10",
-        "query": "INSERT INTO movies (title, release_date, duration, plot_summary, \r\n                    poster_url, trailer_url, genre, language, country, rating, director_id) \r\n                    VALUES ('po', '2025-10-07', '120', 'hejhe', , , 'drama', 'hindi', 'india', '7', )",
-        "raw_query": "INSERT INTO movies (title, release_date, duration, plot_summary, \r\n                    poster_url, trailer_url, genre, language, country, rating, director_id) \r\n                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        "params": [
-            "po",
-            "2025-10-07",
-            "120",
-            "hejhe",
-            null,
-            null,
-            "drama",
-            "hindi",
-            "india",
-            "7",
-            null
-        ],
-        "type": "INSERT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc3370b465",
-        "timestamp": 1761395511.04619,
-        "datetime": "2025-10-25 12:31:51",
-        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc3371ef96",
-        "timestamp": 1761395511.126876,
-        "datetime": "2025-10-25 12:31:51",
-        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc33825648",
-        "timestamp": 1761395512.153166,
-        "datetime": "2025-10-25 12:31:52",
-        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc33958447",
-        "timestamp": 1761395513.361549,
-        "datetime": "2025-10-25 12:31:53",
-        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc33ebfdb0",
-        "timestamp": 1761395518.785846,
-        "datetime": "2025-10-25 12:31:58",
-        "query": "DELETE FROM movies WHERE movie_id = 4",
-        "raw_query": "DELETE FROM movies WHERE movie_id = ?",
-        "params": [
-            4
-        ],
-        "type": "DELETE",
-        "status": "success"
-    },
-    {
-        "id": "68fcc340301a5",
-        "timestamp": 1761395520.197036,
-        "datetime": "2025-10-25 12:32:00",
-        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc34039d82",
-        "timestamp": 1761395520.236961,
-        "datetime": "2025-10-25 12:32:00",
-        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc340415f2",
-        "timestamp": 1761395520.267765,
-        "datetime": "2025-10-25 12:32:00",
-        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc34b20dc4",
-        "timestamp": 1761395531.134599,
-        "datetime": "2025-10-25 12:32:11",
-        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
-        "id": "68fcc34ed6f12",
-        "timestamp": 1761395534.880407,
-        "datetime": "2025-10-25 12:32:14",
-        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
-        "params": [],
-        "type": "SELECT",
-        "status": "success"
-    },
-    {
         "id": "68fcc35351488",
         "timestamp": 1761395539.33294,
         "datetime": "2025-10-25 12:32:19",
@@ -927,6 +541,496 @@
         "datetime": "2025-10-25 12:51:03",
         "query": "SELECT DISTINCT genre FROM movies",
         "raw_query": "SELECT DISTINCT genre FROM movies",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fccfe86b35d",
+        "timestamp": 1761398760.439139,
+        "datetime": "2025-10-25 13:26:00",
+        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fccfe879aaa",
+        "timestamp": 1761398760.498354,
+        "datetime": "2025-10-25 13:26:00",
+        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fccfe898b4e",
+        "timestamp": 1761398760.625498,
+        "datetime": "2025-10-25 13:26:00",
+        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
+        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fccfebd1d8b",
+        "timestamp": 1761398763.859535,
+        "datetime": "2025-10-25 13:26:03",
+        "query": "SELECT * FROM movies WHERE title LIKE '%the%'",
+        "raw_query": "SELECT * FROM movies WHERE title LIKE '%the%'",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fccfed6dee1",
+        "timestamp": 1761398765.45028,
+        "datetime": "2025-10-25 13:26:05",
+        "query": "SELECT \r\n                    m.title,\r\n                    m.rating,\r\n                    c.name as director,\r\n                    COUNT(mc.cast_id) as cast_count,\r\n                    (SELECT AVG(rating) FROM movies) as avg_rating\r\n                FROM movies m\r\n                LEFT JOIN celebrities c ON m.director_id = c.celebrity_id\r\n                LEFT JOIN movie_cast mc ON m.movie_id = mc.movie_id\r\n                WHERE m.rating > 8.0\r\n                GROUP BY m.movie_id, m.title, m.rating, c.name\r\n                HAVING cast_count > 0\r\n                ORDER BY m.rating DESC\r\n                LIMIT 10",
+        "raw_query": "SELECT \r\n                    m.title,\r\n                    m.rating,\r\n                    c.name as director,\r\n                    COUNT(mc.cast_id) as cast_count,\r\n                    (SELECT AVG(rating) FROM movies) as avg_rating\r\n                FROM movies m\r\n                LEFT JOIN celebrities c ON m.director_id = c.celebrity_id\r\n                LEFT JOIN movie_cast mc ON m.movie_id = mc.movie_id\r\n                WHERE m.rating > 8.0\r\n                GROUP BY m.movie_id, m.title, m.rating, c.name\r\n                HAVING cast_count > 0\r\n                ORDER BY m.rating DESC\r\n                LIMIT 10",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fccfef4de8e",
+        "timestamp": 1761398767.319122,
+        "datetime": "2025-10-25 13:26:07",
+        "query": "SELECT * FROM movies WHERE release_date BETWEEN '2000-01-01' AND '2020-12-31'",
+        "raw_query": "SELECT * FROM movies WHERE release_date BETWEEN '2000-01-01' AND '2020-12-31'",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fccff46b1db",
+        "timestamp": 1761398772.438756,
+        "datetime": "2025-10-25 13:26:12",
+        "query": "SELECT genre, COUNT(*) as count \r\n                    FROM movies \r\n                    GROUP BY genre \r\n                    HAVING count > 1",
+        "raw_query": "SELECT genre, COUNT(*) as count \r\n                    FROM movies \r\n                    GROUP BY genre \r\n                    HAVING count > 1",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fccff5f1467",
+        "timestamp": 1761398773.988266,
+        "datetime": "2025-10-25 13:26:13",
+        "query": "SELECT * FROM movies WHERE release_date BETWEEN '2000-01-01' AND '2020-12-31'",
+        "raw_query": "SELECT * FROM movies WHERE release_date BETWEEN '2000-01-01' AND '2020-12-31'",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd0174b375",
+        "timestamp": 1761398807.308093,
+        "datetime": "2025-10-25 13:26:47",
+        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd01843a8e",
+        "timestamp": 1761398808.277137,
+        "datetime": "2025-10-25 13:26:48",
+        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd01980eaa",
+        "timestamp": 1761398809.528045,
+        "datetime": "2025-10-25 13:26:49",
+        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd01c12b53",
+        "timestamp": 1761398812.076631,
+        "datetime": "2025-10-25 13:26:52",
+        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd01d3384a",
+        "timestamp": 1761398813.211021,
+        "datetime": "2025-10-25 13:26:53",
+        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
+        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd01e7dea2",
+        "timestamp": 1761398814.515759,
+        "datetime": "2025-10-25 13:26:54",
+        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd79b3fb75",
+        "timestamp": 1761400731.261803,
+        "datetime": "2025-10-25 13:58:51",
+        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd79c9ba4b",
+        "timestamp": 1761400732.637521,
+        "datetime": "2025-10-25 13:58:52",
+        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd79cc0feb",
+        "timestamp": 1761400732.790514,
+        "datetime": "2025-10-25 13:58:52",
+        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
+        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd79e6a9f9",
+        "timestamp": 1761400734.436736,
+        "datetime": "2025-10-25 13:58:54",
+        "query": "SELECT DISTINCT genre FROM movies ORDER BY genre",
+        "raw_query": "SELECT DISTINCT genre FROM movies ORDER BY genre",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a1a3143",
+        "timestamp": 1761400737.668012,
+        "datetime": "2025-10-25 13:58:57",
+        "query": "SELECT genre FROM movies",
+        "raw_query": "SELECT genre FROM movies",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a1a4fb3",
+        "timestamp": 1761400737.675768,
+        "datetime": "2025-10-25 13:58:57",
+        "query": "SELECT DISTINCT genre FROM movies",
+        "raw_query": "SELECT DISTINCT genre FROM movies",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a23a680",
+        "timestamp": 1761400738.239251,
+        "datetime": "2025-10-25 13:58:58",
+        "query": "SELECT genre FROM movies",
+        "raw_query": "SELECT genre FROM movies",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a23b47e",
+        "timestamp": 1761400738.242821,
+        "datetime": "2025-10-25 13:58:58",
+        "query": "SELECT DISTINCT genre FROM movies",
+        "raw_query": "SELECT DISTINCT genre FROM movies",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a268030",
+        "timestamp": 1761400738.426036,
+        "datetime": "2025-10-25 13:58:58",
+        "query": "SELECT genre FROM movies",
+        "raw_query": "SELECT genre FROM movies",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a268943",
+        "timestamp": 1761400738.428358,
+        "datetime": "2025-10-25 13:58:58",
+        "query": "SELECT DISTINCT genre FROM movies",
+        "raw_query": "SELECT DISTINCT genre FROM movies",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a430d70",
+        "timestamp": 1761400740.200055,
+        "datetime": "2025-10-25 13:59:00",
+        "query": "SELECT \r\n                    title AS movie_name, \r\n                    rating AS score, \r\n                    release_date AS premiere_date,\r\n                    duration AS runtime_minutes\r\n                    FROM movies LIMIT 10",
+        "raw_query": "SELECT \r\n                    title AS movie_name, \r\n                    rating AS score, \r\n                    release_date AS premiere_date,\r\n                    duration AS runtime_minutes\r\n                    FROM movies LIMIT 10",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a450d76",
+        "timestamp": 1761400740.331132,
+        "datetime": "2025-10-25 13:59:00",
+        "query": "SELECT \r\n                    title AS movie_name, \r\n                    rating AS score, \r\n                    release_date AS premiere_date,\r\n                    duration AS runtime_minutes\r\n                    FROM movies LIMIT 10",
+        "raw_query": "SELECT \r\n                    title AS movie_name, \r\n                    rating AS score, \r\n                    release_date AS premiere_date,\r\n                    duration AS runtime_minutes\r\n                    FROM movies LIMIT 10",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a487a24",
+        "timestamp": 1761400740.555559,
+        "datetime": "2025-10-25 13:59:00",
+        "query": "SELECT \r\n                    title AS movie_name, \r\n                    rating AS score, \r\n                    release_date AS premiere_date,\r\n                    duration AS runtime_minutes\r\n                    FROM movies LIMIT 10",
+        "raw_query": "SELECT \r\n                    title AS movie_name, \r\n                    rating AS score, \r\n                    release_date AS premiere_date,\r\n                    duration AS runtime_minutes\r\n                    FROM movies LIMIT 10",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a5786d5",
+        "timestamp": 1761400741.493272,
+        "datetime": "2025-10-25 13:59:01",
+        "query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "raw_query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a5a617f",
+        "timestamp": 1761400741.680323,
+        "datetime": "2025-10-25 13:59:01",
+        "query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "raw_query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a5d9704",
+        "timestamp": 1761400741.890633,
+        "datetime": "2025-10-25 13:59:01",
+        "query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "raw_query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a7cd5de",
+        "timestamp": 1761400743.841186,
+        "datetime": "2025-10-25 13:59:03",
+        "query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "raw_query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a868035",
+        "timestamp": 1761400744.426041,
+        "datetime": "2025-10-25 13:59:04",
+        "query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "raw_query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a891357",
+        "timestamp": 1761400744.59478,
+        "datetime": "2025-10-25 13:59:04",
+        "query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "raw_query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a8b866b",
+        "timestamp": 1761400744.75531,
+        "datetime": "2025-10-25 13:59:04",
+        "query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "raw_query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a8e593e",
+        "timestamp": 1761400744.940354,
+        "datetime": "2025-10-25 13:59:04",
+        "query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "raw_query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7a91fede",
+        "timestamp": 1761400745.130786,
+        "datetime": "2025-10-25 13:59:05",
+        "query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "raw_query": "SELECT title, genre, rating \r\n                    FROM movies \r\n                    WHERE title LIKE '%the%' \r\n                    ORDER BY rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7ac4342c",
+        "timestamp": 1761400748.275508,
+        "datetime": "2025-10-25 13:59:08",
+        "query": "SELECT \r\n                    m.title,\r\n                    m.rating,\r\n                    COALESCE(c.name, 'Unknown Director') as director,\r\n                    COALESCE(m.duration, 0) as duration,\r\n                    IFNULL(m.plot_summary, 'No summary available') as summary_status\r\n                    FROM movies m\r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id\r\n                    ORDER BY m.rating DESC\r\n                    LIMIT 20",
+        "raw_query": "SELECT \r\n                    m.title,\r\n                    m.rating,\r\n                    COALESCE(c.name, 'Unknown Director') as director,\r\n                    COALESCE(m.duration, 0) as duration,\r\n                    IFNULL(m.plot_summary, 'No summary available') as summary_status\r\n                    FROM movies m\r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id\r\n                    ORDER BY m.rating DESC\r\n                    LIMIT 20",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7aea3939",
+        "timestamp": 1761400750.670013,
+        "datetime": "2025-10-25 13:59:10",
+        "query": "SELECT \r\n                    title,\r\n                    UPPER(title) as uppercase_title,\r\n                    LOWER(genre) as lowercase_genre,\r\n                    LENGTH(title) as title_length,\r\n                    CONCAT(title, ' (', genre, ')') as full_display,\r\n                    SUBSTRING(title, 1, 20) as short_title\r\n                    FROM movies\r\n                    ORDER BY title_length DESC\r\n                    LIMIT 15",
+        "raw_query": "SELECT \r\n                    title,\r\n                    UPPER(title) as uppercase_title,\r\n                    LOWER(genre) as lowercase_genre,\r\n                    LENGTH(title) as title_length,\r\n                    CONCAT(title, ' (', genre, ')') as full_display,\r\n                    SUBSTRING(title, 1, 20) as short_title\r\n                    FROM movies\r\n                    ORDER BY title_length DESC\r\n                    LIMIT 15",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7afd0254",
+        "timestamp": 1761400751.852571,
+        "datetime": "2025-10-25 13:59:11",
+        "query": "SELECT \r\n                    title,\r\n                    rating,\r\n                    ROUND(rating, 1) as rounded_rating,\r\n                    CEIL(rating) as ceiling,\r\n                    FLOOR(rating) as floor,\r\n                    duration,\r\n                    ROUND(duration \/ 60, 2) as duration_hours,\r\n                    MOD(duration, 60) as remaining_minutes\r\n                    FROM movies\r\n                    WHERE duration IS NOT NULL\r\n                    ORDER BY rating DESC\r\n                    LIMIT 15",
+        "raw_query": "SELECT \r\n                    title,\r\n                    rating,\r\n                    ROUND(rating, 1) as rounded_rating,\r\n                    CEIL(rating) as ceiling,\r\n                    FLOOR(rating) as floor,\r\n                    duration,\r\n                    ROUND(duration \/ 60, 2) as duration_hours,\r\n                    MOD(duration, 60) as remaining_minutes\r\n                    FROM movies\r\n                    WHERE duration IS NOT NULL\r\n                    ORDER BY rating DESC\r\n                    LIMIT 15",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7b18b045",
+        "timestamp": 1761400753.56942,
+        "datetime": "2025-10-25 13:59:13",
+        "query": "SELECT \r\n                    m.title, \r\n                    m.rating, \r\n                    m.genre,\r\n                    CASE \r\n                        WHEN m.rating >= 8.5 THEN 'Hall of Fame'\r\n                        WHEN m.rating >= 7.5 THEN 'Highly Recommended'\r\n                        WHEN m.rating >= 6.5 THEN 'Recommended'\r\n                        ELSE 'Standard'\r\n                    END as recommendation_level\r\n                    FROM movies m \r\n                    ORDER BY m.rating DESC",
+        "raw_query": "SELECT \r\n                    m.title, \r\n                    m.rating, \r\n                    m.genre,\r\n                    CASE \r\n                        WHEN m.rating >= 8.5 THEN 'Hall of Fame'\r\n                        WHEN m.rating >= 7.5 THEN 'Highly Recommended'\r\n                        WHEN m.rating >= 6.5 THEN 'Recommended'\r\n                        ELSE 'Standard'\r\n                    END as recommendation_level\r\n                    FROM movies m \r\n                    ORDER BY m.rating DESC",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7bdaa292",
+        "timestamp": 1761400765.696985,
+        "datetime": "2025-10-25 13:59:25",
+        "query": "SELECT genre FROM movies",
+        "raw_query": "SELECT genre FROM movies",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7bdab4c7",
+        "timestamp": 1761400765.701643,
+        "datetime": "2025-10-25 13:59:25",
+        "query": "SELECT DISTINCT genre FROM movies",
+        "raw_query": "SELECT DISTINCT genre FROM movies",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7bf9212b",
+        "timestamp": 1761400767.598319,
+        "datetime": "2025-10-25 13:59:27",
+        "query": "SELECT \r\n                    title AS movie_name, \r\n                    rating AS score, \r\n                    release_date AS premiere_date,\r\n                    duration AS runtime_minutes\r\n                    FROM movies LIMIT 10",
+        "raw_query": "SELECT \r\n                    title AS movie_name, \r\n                    rating AS score, \r\n                    release_date AS premiere_date,\r\n                    duration AS runtime_minutes\r\n                    FROM movies LIMIT 10",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7cecf78a",
+        "timestamp": 1761400782.849805,
+        "datetime": "2025-10-25 13:59:42",
+        "query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
+        "raw_query": "SELECT * FROM celebrities  ORDER BY name LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7cfbddc6",
+        "timestamp": 1761400783.777674,
+        "datetime": "2025-10-25 13:59:43",
+        "query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT ts.*, c.name as creator_name \r\n                    FROM tv_series ts \r\n                    LEFT JOIN celebrities c ON ts.creator_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7d0daaf3",
+        "timestamp": 1761400784.895734,
+        "datetime": "2025-10-25 13:59:44",
+        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7d38f396",
+        "timestamp": 1761400787.586659,
+        "datetime": "2025-10-25 13:59:47",
+        "query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "raw_query": "SELECT m.*, c.name as director_name \r\n                    FROM movies m \r\n                    LEFT JOIN celebrities c ON m.director_id = c.celebrity_id \r\n                     \r\n                    ORDER BY rating DESC \r\n                    LIMIT 50",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7d8509df",
+        "timestamp": 1761400792.330215,
+        "datetime": "2025-10-25 13:59:52",
+        "query": "SELECT DISTINCT genre FROM movies ORDER BY genre",
+        "raw_query": "SELECT DISTINCT genre FROM movies ORDER BY genre",
+        "params": [],
+        "type": "SELECT",
+        "status": "success"
+    },
+    {
+        "id": "68fcd7e0cad94",
+        "timestamp": 1761400800.830877,
+        "datetime": "2025-10-25 14:00:00",
+        "query": "SELECT \r\n                    title,\r\n                    rating,\r\n                    ROUND(rating, 1) as rounded_rating,\r\n                    CEIL(rating) as ceiling,\r\n                    FLOOR(rating) as floor,\r\n                    duration,\r\n                    ROUND(duration \/ 60, 2) as duration_hours,\r\n                    MOD(duration, 60) as remaining_minutes\r\n                    FROM movies\r\n                    WHERE duration IS NOT NULL\r\n                    ORDER BY rating DESC\r\n                    LIMIT 15",
+        "raw_query": "SELECT \r\n                    title,\r\n                    rating,\r\n                    ROUND(rating, 1) as rounded_rating,\r\n                    CEIL(rating) as ceiling,\r\n                    FLOOR(rating) as floor,\r\n                    duration,\r\n                    ROUND(duration \/ 60, 2) as duration_hours,\r\n                    MOD(duration, 60) as remaining_minutes\r\n                    FROM movies\r\n                    WHERE duration IS NOT NULL\r\n                    ORDER BY rating DESC\r\n                    LIMIT 15",
         "params": [],
         "type": "SELECT",
         "status": "success"
