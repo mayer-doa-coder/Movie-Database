@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Paradiso - Setup Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 { color: #333; }
+        .check-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #ccc;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+        .check-item.success {
+            border-left-color: #10b981;
+            background: #d1fae5;
+        }
+        .check-item.error {
+            border-left-color: #ef4444;
+            background: #fee2e2;
+        }
+        .check-item.pending {
+            border-left-color: #f59e0b;
+            background: #fef3c7;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #1d4ed8;
+        }
+        pre {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        .status { font-weight: bold; margin-left: 10px; }
+        .success-text { color: #10b981; }
+        .error-text { color: #ef4444; }
+        .pending-text { color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🎬 Cinema Paradiso Setup Verification</h1>
+        <p>This page will help you verify that all components are properly configured.</p>
+        <button onclick="runChecks()">Run System Checks</button>
+        <button onclick="location.href='index.html'" style="background: #10b981;">Go to Application</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        const API_BASE = '../backend/api';
+        
+        async function runChecks() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<div class="card"><h2>Running Checks...</h2></div>';
+            
+            const checks = [];
+            
+            // Check 1: Database Connection
+            checks.push(await checkDatabaseConnection());
+            
+            // Check 2: Movies API
+            checks.push(await checkMoviesAPI());
+            
+            // Check 3: SQL Logger
+            checks.push(await checkSQLLogger());
+            
+            // Check 4: Query Executor
+            checks.push(await checkQueryExecutor());
+            
+            // Check 5: File Permissions
+            checks.push(await checkFilePermissions());
+            
+            displayResults(checks);
+        }
+        
+        async function checkDatabaseConnection() {
+            try {
+                const res = await fetch(`${API_BASE}/movies.php`);
+                const data = await res.json();
+                
+                if (data.success !== undefined) {
+                    return {
+                        name: 'Database Connection',
+                        status: 'success',
+                        message: 'Database connection successful! Found ' + (data.count || 0) + ' movies.'
+                    };
+                } else {
+                    return {
+                        name: 'Database Connection',
+                        status: 'error',
+                        message: 'Database connected but unexpected response format.'
+                    };
+                }
+            } catch (error) {
+                return {
+                    name: 'Database Connection',
+                    status: 'error',
+                    message: 'Failed to connect to database: ' + error.message
+                };
+            }
+        }
+        
+        async function checkMoviesAPI() {
+            try {
+                const res = await fetch(`${API_BASE}/movies.php`);
+                const data = await res.json();
+                
+                if (data.success && Array.isArray(data.data)) {
+                    return {
+                        name: 'Movies API',
+                        status: 'success',
+                        message: 'Movies API working correctly. ' + data.data.length + ' movies loaded.'
+                    };
+                } else {
+                    return {
+                        name: 'Movies API',
+                        status: 'error',
+                        message: 'Movies API responded but data format is incorrect.'
+                    };
+                }
+            } catch (error) {
+                return {
+                    name: 'Movies API',
+                    status: 'error',
+                    message: 'Movies API error: ' + error.message
+                };
+            }
+        }
+        
+        async function checkSQLLogger() {
+            try {
+                const res = await fetch(`${API_BASE}/sql-logs.php?limit=10`);
+                const data = await res.json();
+                
+                if (data.success) {
+                    return {
+                        name: 'SQL Logger',
+                        status: 'success',
+                        message: 'SQL Logger is working! ' + data.data.length + ' queries logged.'
+                    };
+                } else {
+                    return {
+                        name: 'SQL Logger',
+                        status: 'error',
+                        message: 'SQL Logger responded but encountered an error.'
+                    };
+                }
+            } catch (error) {
+                return {
+                    name: 'SQL Logger',
+                    status: 'error',
+                    message: 'SQL Logger error: ' + error.message
+                };
+            }
+        }
+        
+        async function checkQueryExecutor() {
+            try {
+                const res = await fetch(`${API_BASE}/execute-query.php`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: 'SELECT 1 as test' })
+                });
+                const data = await res.json();
+                
+                if (data.success && data.type === 'select') {
+                    return {
+                        name: 'Query Executor',
+                        status: 'success',
+                        message: 'Query Executor is working! Test query executed successfully.'
+                    };
+                } else {
+                    return {
+                        name: 'Query Executor',
+                        status: 'error',
+                        message: 'Query Executor responded but test query failed.'
+                    };
+                }
+            } catch (error) {
+                return {
+                    name: 'Query Executor',
+                    status: 'error',
+                    message: 'Query Executor error: ' + error.message
+                };
+            }
+        }
+        
+        async function checkFilePermissions() {
+            try {
+                const res = await fetch(`${API_BASE}/sql-logs.php`, { method: 'POST' });
+                const data = await res.json();
+                
+                if (data.success) {
+                    return {
+                        name: 'File Permissions',
+                        status: 'success',
+                        message: 'Log files are readable and writable.'
+                    };
+                } else {
+                    return {
+                        name: 'File Permissions',
+                        status: 'pending',
+                        message: 'Log files might have permission issues. Check backend/logs/ directory.'
+                    };
+                }
+            } catch (error) {
+                return {
+                    name: 'File Permissions',
+                    status: 'pending',
+                    message: 'Could not verify file permissions: ' + error.message
+                };
+            }
+        }
+        
+        function displayResults(checks) {
+            const results = document.getElementById('results');
+            let html = '<div class="card"><h2>System Check Results</h2>';
+            
+            let allSuccess = true;
+            
+            checks.forEach(check => {
+                const statusClass = check.status;
+                const statusText = check.status === 'success' ? '✓' : 
+                                  check.status === 'error' ? '✗' : '⚠';
+                
+                html += `
+                    <div class="check-item ${statusClass}">
+                        <strong>${statusText} ${check.name}</strong>
+                        <span class="status ${statusClass}-text">${check.status.toUpperCase()}</span>
+                        <div style="margin-top: 8px; color: #666;">${check.message}</div>
+                    </div>
+                `;
+                
+                if (check.status === 'error') allSuccess = false;
+            });
+            
+            html += '<h3>Next Steps:</h3>';
+            
+            if (allSuccess) {
+                html += `
+                    <div class="check-item success">
+                        <p>✓ All systems are operational!</p>
+                        <p>You can now use the Cinema Paradiso application.</p>
+                        <button onclick="location.href='index.html'" style="margin-top: 10px;">
+                            Launch Application →
+                        </button>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="check-item error">
+                        <p><strong>Setup Issues Detected</strong></p>
+                        <p>Please fix the errors above before using the application.</p>
+                        <h4>Common Solutions:</h4>
+                        <ol>
+                            <li>Ensure XAMPP Apache and MySQL are running</li>
+                            <li>Import database/schema.sql into MySQL</li>
+                            <li>Check database credentials in backend/config.php</li>
+                            <li>Verify backend/logs/ directory exists and is writable</li>
+                            <li>Clear browser cache and try again</li>
+                        </ol>
+                        <button onclick="runChecks()" style="margin-top: 10px;">
+                            Re-run Checks
+                        </button>
+                    </div>
+                `;
+            }
+            
+            html += '</div>';
+            results.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

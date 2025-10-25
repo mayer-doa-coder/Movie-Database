@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Paradiso - Database Management</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎬 Cinema Paradiso</h1>
+            <p>Movie Database Management System</p>
+            <button id="toggleTerminal" class="btn btn-terminal">📊 Toggle SQL Terminal</button>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-btn" data-tab="movies">Movies</button>
+            <button class="tab-btn" data-tab="series">TV Series</button>
+            <button class="tab-btn" data-tab="celebrities">Celebrities</button>
+            <button class="tab-btn" data-tab="query">SQL Executor</button>
+            <button class="tab-btn" data-tab="advanced">Advanced Queries</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard">
+                <h2>Database Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎬</div>
+                        <div class="stat-info">
+                            <h3 id="totalMovies">0</h3>
+                            <p>Total Movies</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📺</div>
+                        <div class="stat-info">
+                            <h3 id="totalSeries">0</h3>
+                            <p>TV Series</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-info">
+                            <h3 id="totalCelebrities">0</h3>
+                            <p>Celebrities</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💾</div>
+                        <div class="stat-info">
+                            <h3 id="totalQueries">0</h3>
+                            <p>SQL Queries Executed</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>Recent Activity</h3>
+                    <div id="recentActivity" class="activity-list"></div>
+                </div>
+            </div>
+
+            <!-- Movies Tab -->
+            <div class="tab-content" id="movies">
+                <div class="section-header">
+                    <h2>Movies Management</h2>
+                    <button class="btn btn-primary" onclick="showAddMovieForm()">+ Add Movie</button>
+                </div>
+
+                <div class="filters">
+                    <input type="text" id="movieSearch" placeholder="Search movies..." class="search-input">
+                    <select id="genreFilter" class="filter-select">
+                        <option value="">All Genres</option>
+                        <option value="Action">Action</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Sci-Fi">Sci-Fi</option>
+                        <option value="Crime">Crime</option>
+                    </select>
+                </div>
+
+                <div id="moviesList" class="data-grid"></div>
+            </div>
+
+            <!-- TV Series Tab -->
+            <div class="tab-content" id="series">
+                <div class="section-header">
+                    <h2>TV Series Management</h2>
+                    <button class="btn btn-primary" onclick="showAddSeriesForm()">+ Add Series</button>
+                </div>
+
+                <div class="filters">
+                    <input type="text" id="seriesSearch" placeholder="Search series..." class="search-input">
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Ended">Ended</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div id="seriesList" class="data-grid"></div>
+            </div>
+
+            <!-- Celebrities Tab -->
+            <div class="tab-content" id="celebrities">
+                <div class="section-header">
+                    <h2>Celebrities Management</h2>
+                    <button class="btn btn-primary" onclick="showAddCelebrityForm()">+ Add Celebrity</button>
+                </div>
+
+                <div class="filters">
+                    <input type="text" id="celebritySearch" placeholder="Search celebrities..." class="search-input">
+                    <select id="professionFilter" class="filter-select">
+                        <option value="">All Professions</option>
+                        <option value="Actor">Actor</option>
+                        <option value="Director">Director</option>
+                        <option value="Writer">Writer</option>
+                        <option value="Producer">Producer</option>
+                    </select>
+                </div>
+
+                <div id="celebritiesList" class="data-grid"></div>
+            </div>
+
+            <!-- SQL Executor Tab -->
+            <div class="tab-content" id="query">
+                <h2>SQL Query Executor</h2>
+                <p class="info-text">Write and execute custom SQL queries. The results and queries will appear in real-time.</p>
+                
+                <div class="query-editor">
+                    <textarea id="sqlQuery" placeholder="Enter your SQL query here...
+Example: SELECT * FROM movies WHERE rating > 8.0 ORDER BY rating DESC"></textarea>
+                    <div class="editor-actions">
+                        <button class="btn btn-success" onclick="executeQuery()">▶ Execute Query</button>
+                        <button class="btn btn-secondary" onclick="clearQuery()">Clear</button>
+                    </div>
+                </div>
+
+                <div id="queryResult" class="query-result"></div>
+            </div>
+
+            <!-- Advanced Queries Tab -->
+            <div class="tab-content" id="advanced">
+                <h2>Advanced SQL Operations</h2>
+                <p class="info-text">Explore advanced SQL operations: JOINs, Subqueries, Aggregations, etc.</p>
+
+                <div class="operations-grid">
+                    <button class="operation-btn" onclick="runAdvancedQuery('distinct')">DISTINCT</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('between')">BETWEEN</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('in')">IN Clause</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('like')">LIKE Pattern</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('aggregates')">Aggregates</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('group_by')">GROUP BY</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('having')">HAVING</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('inner_join')">INNER JOIN</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('left_join')">LEFT JOIN</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('subquery_where')">Subquery WHERE</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('subquery_select')">Subquery SELECT</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('union')">UNION</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('union_all')">UNION ALL</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('cross_join')">CROSS JOIN</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('self_join')">SELF JOIN</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('order_by')">ORDER BY</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('complex_query')">Complex Query</button>
+                    <button class="operation-btn" onclick="runAdvancedQuery('top_rated_by_genre')">Top by Genre</button>
+                </div>
+
+                <div id="advancedResult" class="query-result"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Floating SQL Terminal -->
+    <div id="sqlTerminal" class="sql-terminal">
+        <div class="terminal-header">
+            <span>🔴 Live SQL Terminal</span>
+            <div class="terminal-controls">
+                <button onclick="clearTerminal()" title="Clear">🗑️</button>
+                <button onclick="toggleTerminal()" title="Close">✕</button>
+            </div>
+        </div>
+        <div class="terminal-stats">
+            <span id="terminalStats">Queries: 0 | Success: 0 | Errors: 0</span>
+        </div>
+        <div id="terminalContent" class="terminal-content"></div>
+    </div>
+
+    <!-- Modal for Forms -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
