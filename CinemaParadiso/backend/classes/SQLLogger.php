@@ -70,8 +70,14 @@ class SQLLogger {
         
         if (!empty($params)) {
             foreach ($params as $param) {
-                $value = is_string($param) ? "'" . addslashes($param) . "'" : $param;
-                $formatted = preg_replace('/\?/', $value, $formatted, 1);
+                if ($param === null) {
+                    $value = 'NULL';
+                } elseif (is_string($param)) {
+                    $value = "'" . addslashes($param) . "'";
+                } else {
+                    $value = $param;
+                }
+                $formatted = preg_replace('/\?/', (string)$value, $formatted, 1);
             }
         }
 

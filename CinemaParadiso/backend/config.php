@@ -21,6 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Timezone
-date_default_timezone_set('UTC');
+// Timezone (UTC+6)
+date_default_timezone_set('Asia/Dhaka');
 ?>

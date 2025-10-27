@@ -7,10 +7,14 @@ $method = $_SERVER['REQUEST_METHOD'];
 $db = Database::getInstance();
 
 try {
-    // Advanced SQL Operations - Operational implementation with all SQL queries
+    // Advanced Analytics & Operations - User-friendly interactive features
+    // All SQL operations work behind the scenes
     
-    if (isset($_GET['operation'])) {
-        $operation = $_GET['operation'];
+    if (isset($_GET['action'])) {
+        $action = $_GET['action'];
+        
+        // Get parameters
+        $params = $_GET;
         
         switch ($operation) {
             // ========== SELECT OPERATIONS ==========

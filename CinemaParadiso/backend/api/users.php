@@ -11,8 +11,8 @@ try {
         case 'GET':
             if (isset($_GET['id'])) {
                 $id = (int)$_GET['id'];
-                $user = $db->fetchOne("SELECT user_id, username, email, full_name, bio, 
-                    avatar_url, date_of_birth, country, created_at, last_login, is_active 
+                $user = $db->fetchOne("SELECT user_id, username, email, full_name, 
+                    date_of_birth, country, created_at 
                     FROM users WHERE user_id = ?", [$id]);
                 
                 if ($user) {
@@ -48,8 +48,13 @@ try {
                 $whereClause = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
                 $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 50;
                 
-                $sql = "SELECT user_id, username, email, full_name, country, created_at, is_active 
-                    FROM users $whereClause ORDER BY created_at DESC LIMIT $limit";
+                $sql = "SELECT u.user_id, u.username, u.email, u.full_name, u.country, u.created_at,
+                    (SELECT COUNT(*) FROM reviews WHERE user_id = u.user_id) as total_reviews,
+                    (SELECT COUNT(*) FROM watchlist WHERE user_id = u.user_id) as watchlist_count,
+                    (SELECT COUNT(*) FROM favorites WHERE user_id = u.user_id) as favorites_count,
+                    (SELECT COUNT(*) FROM user_follows WHERE following_id = u.user_id) as followers,
+                    (SELECT COUNT(*) FROM user_follows WHERE follower_id = u.user_id) as following
+                    FROM users u $whereClause ORDER BY u.created_at DESC LIMIT $limit";
                 
                 $users = $db->fetchAll($sql, $params);
                 echo json_encode(['success' => true, 'data' => $users]);
@@ -63,14 +68,13 @@ try {
             $passwordHash = password_hash($data['password'] ?? 'password123', PASSWORD_DEFAULT);
             
             $sql = "INSERT INTO users (username, email, password_hash, full_name, 
-                    bio, date_of_birth, country) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    date_of_birth, country) VALUES (?, ?, ?, ?, ?, ?)";
             
             $params = [
                 $data['username'],
                 $data['email'],
                 $passwordHash,
                 $data['full_name'] ?? null,
-                $data['bio'] ?? null,
                 $data['date_of_birth'] ?? null,
                 $data['country'] ?? null
             ];
@@ -93,8 +97,8 @@ try {
             $updates = [];
             $params = [];
             
-            $allowedFields = ['username', 'email', 'full_name', 'bio', 
-                             'avatar_url', 'date_of_birth', 'country', 'is_active'];
+            $allowedFields = ['username', 'email', 'full_name', 
+                             'date_of_birth', 'country'];
             
             foreach ($allowedFields as $field) {
                 if (isset($data[$field])) {

@@ -10,9 +10,9 @@
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1>🎬 Cinema Paradiso</h1>
+            <h1>Cinema Paradiso</h1>
             <p>Movie Database Management System</p>
-            <button id="toggleTerminal" class="btn btn-terminal">📊 Toggle SQL Terminal</button>
+            <button id="toggleTerminal" class="btn btn-terminal">Toggle SQL Terminal</button>
         </header>
 
         <!-- Navigation -->
@@ -21,8 +21,11 @@
             <button class="tab-btn" data-tab="movies">Movies</button>
             <button class="tab-btn" data-tab="series">TV Series</button>
             <button class="tab-btn" data-tab="celebrities">Celebrities</button>
+            <button class="tab-btn" data-tab="users">Users</button>
+            <button class="tab-btn" data-tab="reviews">Reviews</button>
+            <button class="tab-btn" data-tab="views">Views</button>
             <button class="tab-btn" data-tab="query">SQL Executor</button>
-            <button class="tab-btn" data-tab="advanced">Advanced Queries</button>
+            <button class="tab-btn" data-tab="advanced">Analytics</button>
         </nav>
 
         <!-- Main Content -->
@@ -32,28 +35,28 @@
                 <h2>Database Dashboard</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon">🎬</div>
+                        <div class="stat-icon"></div>
                         <div class="stat-info">
                             <h3 id="totalMovies">0</h3>
                             <p>Total Movies</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">📺</div>
+                        <div class="stat-icon"></div>
                         <div class="stat-info">
                             <h3 id="totalSeries">0</h3>
                             <p>TV Series</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">⭐</div>
+                        <div class="stat-icon"></div>
                         <div class="stat-info">
                             <h3 id="totalCelebrities">0</h3>
                             <p>Celebrities</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">💾</div>
+                        <div class="stat-icon"></div>
                         <div class="stat-info">
                             <h3 id="totalQueries">0</h3>
                             <p>SQL Queries Executed</p>
@@ -129,6 +132,52 @@
                 <div id="celebritiesList" class="data-grid"></div>
             </div>
 
+            <!-- Users Tab -->
+            <div class="tab-content" id="users">
+                <div class="section-header">
+                    <h2>Users Management</h2>
+                </div>
+
+                <div class="filters">
+                    <input type="text" id="userSearch" placeholder="Search users..." class="search-input">
+                    <select id="countryFilter" class="filter-select">
+                        <option value="">All Countries</option>
+                        <option value="USA">USA</option>
+                        <option value="UK">UK</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Bangladesh">Bangladesh</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="loadUsers()">Search</button>
+                </div>
+
+                <div id="usersList" class="data-grid"></div>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div class="tab-content" id="reviews">
+                <div class="section-header">
+                    <h2>Reviews Management</h2>
+                </div>
+
+                <div class="filters">
+                    <select id="reviewContentType" class="filter-select">
+                        <option value="">All Content</option>
+                        <option value="movie">Movies</option>
+                        <option value="tv_series">TV Series</option>
+                    </select>
+                    <select id="reviewRatingFilter" class="filter-select">
+                        <option value="">All Ratings</option>
+                        <option value="9">9.0+</option>
+                        <option value="8">8.0+</option>
+                        <option value="7">7.0+</option>
+                        <option value="6">6.0+</option>
+                    </select>
+                    <button class="btn btn-secondary" onclick="loadReviews()">Filter</button>
+                </div>
+
+                <div id="reviewsList" class="data-grid"></div>
+            </div>
+
             <!-- SQL Executor Tab -->
             <div class="tab-content" id="query">
                 <h2>SQL Query Executor</h2>
@@ -148,115 +197,288 @@ Example: SELECT * FROM movies WHERE rating > 8.0 ORDER BY rating DESC"></textare
 
             <!-- Advanced Queries Tab -->
             <div class="tab-content" id="advanced">
-                <h2>Advanced SQL Operations</h2>
-                <p class="info-text">Comprehensive SQL operations - fully operational with real database data</p>
+                <h2>Analytics & Discovery</h2>
+                <p class="info-text">Explore your content with powerful analytics and discovery tools</p>
 
-                <div class="section">
-                    <h3>📋 SELECT Operations</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('distinct')">DISTINCT</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('distinct_all')">ALL vs DISTINCT</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('aliases')">Aliases (AS)</button>
+                <!-- Search & Discovery Section -->
+                <div class="analytics-section">
+                    <h3>Search & Discovery</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card">
+                            <h4> Search Content</h4>
+                            <input type="text" id="searchKeyword" placeholder="Search movies & series..." class="tool-input">
+                            <button onclick="searchContent()" class="tool-btn">Search</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4> Find Similar</h4>
+                            <input type="number" id="similarMovieId" placeholder="Movie ID" class="tool-input">
+                            <button onclick="findSimilar()" class="tool-btn">Find Similar</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Discover Top Rated</h4>
+                            <select id="minRatingDiscover" class="tool-input">
+                                <option value="7.0">7.0+</option>
+                                <option value="8.0" selected>8.0+</option>
+                                <option value="9.0">9.0+</option>
+                            </select>
+                            <button onclick="discoverTopRated()" class="tool-btn">Discover</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Browse by Year</h4>
+                            <div style="display: flex; gap: 5px;">
+                                <input type="number" id="startYear" placeholder="2010" value="2010" class="tool-input" style="flex: 1;">
+                                <input type="number" id="endYear" placeholder="2024" value="2024" class="tool-input" style="flex: 1;">
+                            </div>
+                            <button onclick="browseByYear()" class="tool-btn">Browse</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>🔍 WHERE Clause</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('between')">BETWEEN</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('in')">IN Clause</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('like')">LIKE Pattern</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('not_null')">NOT NULL</button>
+                <!-- Filtering Section -->
+                <div class="analytics-section">
+                    <h3> Advanced Filtering</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card">
+                            <h4>Filter by Genre</h4>
+                            <select id="filterGenre" class="tool-input">
+                                <option value="">Select Genre</option>
+                                <option value="Action">Action</option>
+                                <option value="Drama">Drama</option>
+                                <option value="Sci-Fi">Sci-Fi</option>
+                                <option value="Crime">Crime</option>
+                                <option value="Thriller">Thriller</option>
+                            </select>
+                            <select id="sortBy" class="tool-input">
+                                <option value="rating">Sort by Rating</option>
+                                <option value="release_date">Sort by Date</option>
+                                <option value="title">Sort by Title</option>
+                            </select>
+                            <button onclick="filterByGenre()" class="tool-btn">Apply Filter</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Rating Range</h4>
+                            <div style="display: flex; gap: 5px; align-items: center;">
+                                <input type="number" id="minRating" value="7" min="0" max="10" step="0.1" class="tool-input" style="flex: 1;">
+                                <span>to</span>
+                                <input type="number" id="maxRating" value="10" min="0" max="10" step="0.1" class="tool-input" style="flex: 1;">
+                            </div>
+                            <button onclick="filterByRatingRange()" class="tool-btn">Filter</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Multiple Genres</h4>
+                            <input type="text" id="multipleGenres" placeholder="Action,Drama,Sci-Fi" class="tool-input">
+                            <small>Comma-separated</small>
+                            <button onclick="filterMultipleGenres()" class="tool-btn">Filter</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>📊 Aggregate Functions</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('aggregates')">All Aggregates</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('count')">COUNT</button>
+                <!-- Analytics Section -->
+                <div class="analytics-section">
+                    <h3>Analytics & Statistics</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card">
+                            <h4>Genre Statistics</h4>
+                            <p class="tool-desc">Comprehensive analysis by genre</p>
+                            <button onclick="getGenreStatistics()" class="tool-btn">Analyze Genres</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Director Performance</h4>
+                            <p class="tool-desc">Top directors and their ratings</p>
+                            <button onclick="getDirectorPerformance()" class="tool-btn">View Directors</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Content Distribution</h4>
+                            <p class="tool-desc">Movies & Series distribution</p>
+                            <button onclick="getContentDistribution()" class="tool-btn">View Distribution</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Rating Distribution</h4>
+                            <p class="tool-desc">How ratings are distributed</p>
+                            <button onclick="getRatingDistribution()" class="tool-btn">View Distribution</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>📦 Grouping & Filtering</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('group_by')">GROUP BY</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('having')">HAVING</button>
+                <!-- Comparisons Section -->
+                <div class="analytics-section">
+                    <h3>Comparisons</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card">
+                            <h4>Compare Genres</h4>
+                            <select id="genre1" class="tool-input">
+                                <option value="Action">Action</option>
+                                <option value="Drama">Drama</option>
+                                <option value="Sci-Fi">Sci-Fi</option>
+                                <option value="Crime">Crime</option>
+                            </select>
+                            <select id="genre2" class="tool-input">
+                                <option value="Drama" selected>Drama</option>
+                                <option value="Action">Action</option>
+                                <option value="Sci-Fi">Sci-Fi</option>
+                                <option value="Crime">Crime</option>
+                            </select>
+                            <button onclick="compareGenres()" class="tool-btn">Compare</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Movies vs Series</h4>
+                            <p class="tool-desc">Compare movies and TV series stats</p>
+                            <button onclick="compareMoviesVsSeries()" class="tool-btn">Compare</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>🔄 Sorting</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('order_by')">ORDER BY</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('order_asc_desc')">ASC vs DESC</button>
+                <!-- Recommendations Section -->
+                <div class="analytics-section">
+                    <h3>Smart Recommendations</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card">
+                            <h4>Get Recommendations</h4>
+                            <input type="number" id="userIdRec" placeholder="User ID (default: 1)" value="1" class="tool-input">
+                            <button onclick="getRecommendations()" class="tool-btn">Get Recommendations</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4> Trending Now</h4>
+                            <p class="tool-desc">Recent highly-rated content</p>
+                            <button onclick="getTrendingNow()" class="tool-btn">View Trending</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4> Hidden Gems</h4>
+                            <p class="tool-desc">Great content you might have missed</p>
+                            <button onclick="getHiddenGems()" class="tool-btn">Discover Gems</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>🔗 JOIN Operations</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('inner_join')">INNER JOIN</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('left_join')">LEFT JOIN</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('right_join')">RIGHT JOIN</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('cross_join')">CROSS JOIN</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('self_join')">SELF JOIN</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('natural_join')">USING Clause</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('multiple_joins')">Multiple JOINs</button>
+                <!-- Timeline Section -->
+                <div class="analytics-section">
+                    <h3>Timeline & Trends</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card">
+                            <h4>Release Timeline</h4>
+                            <p class="tool-desc">Monthly release patterns</p>
+                            <button onclick="getReleaseTimeline()" class="tool-btn">View Timeline</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Decade Analysis</h4>
+                            <p class="tool-desc">Content analysis by decade</p>
+                            <button onclick="getDecadeAnalysis()" class="tool-btn">Analyze Decades</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>🎯 Subqueries</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('subquery_where')">Subquery WHERE</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('subquery_select')">Subquery SELECT</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('subquery_from')">Subquery FROM</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('exists_subquery')">EXISTS</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('not_exists_subquery')">NOT EXISTS</button>
+                <!-- Cast & Crew Section -->
+                <div class="analytics-section">
+                    <h3>Cast & Crew</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card">
+                            <h4>Movie with Cast</h4>
+                            <input type="number" id="movieIdCast" placeholder="Movie ID" class="tool-input">
+                            <button onclick="getMovieWithCast()" class="tool-btn">View Details</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Celebrity Filmography</h4>
+                            <input type="number" id="celebrityIdFilm" placeholder="Celebrity ID" class="tool-input">
+                            <button onclick="getCelebrityFilmography()" class="tool-btn">View Filmography</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>🔀 Set Operations</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('union')">UNION</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('union_all')">UNION ALL</button>
+                <!-- Set Operations Section -->
+                <div class="analytics-section">
+                    <h3>Set Operations (INTERSECT & MINUS)</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card">
+                            <h4>INTERSECT: High Rated by Genre</h4>
+                            <p class="tool-desc">Movies in specific genre AND high rating</p>
+                            <input type="text" id="set-genre" placeholder="Genre (Action)" class="tool-input" value="Action">
+                            <input type="number" id="set-rating" placeholder="Min Rating (8.0)" class="tool-input" value="8.0" step="0.1">
+                            <button onclick="loadSetOperations('intersect_high_rated')" class="tool-btn">Execute INTERSECT</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>MINUS: Movies Without Reviews</h4>
+                            <p class="tool-desc">All movies MINUS movies with reviews</p>
+                            <button onclick="loadSetOperations('minus_movies_no_reviews')" class="tool-btn">Execute MINUS</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>🏗️ Common Table Expression</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('cte')">CTE (WITH)</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('cte_multiple')">Multiple CTEs</button>
+                <!-- Results Display -->
+                <div id="analyticsResult" class="query-result"></div>
+            </div>
+
+            <!-- Views Tab -->
+            <div class="tab-content" id="views">
+                <h2>Database Views</h2>
+                <p class="section-info">Query data using predefined database views for simplified access</p>
+
+                <!-- View Selection -->
+                <div class="analytics-section">
+                    <h3>Available Views</h3>
+                    <div class="tool-grid">
+                        <div class="tool-card">
+                            <h4>List All Views</h4>
+                            <p class="tool-desc">Show all available database views</p>
+                            <button onclick="loadViews('list')" class="tool-btn">List Views</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Movies with Directors</h4>
+                            <p class="tool-desc">Movies with director information</p>
+                            <input type="number" id="view-limit" placeholder="Limit (20)" class="tool-input" value="20">
+                            <button onclick="loadViews('movies_with_directors')" class="tool-btn">View Data</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Series with Creators</h4>
+                            <p class="tool-desc">TV Series with creator information</p>
+                            <button onclick="loadViews('series_with_creators')" class="tool-btn">View Data</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Top Rated Content</h4>
+                            <p class="tool-desc">All content with rating >= 8.0</p>
+                            <button onclick="loadViews('top_rated_content')" class="tool-btn">View Data</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>User Statistics</h4>
+                            <p class="tool-desc">User activity summary</p>
+                            <input type="number" id="view-user-id" placeholder="User ID (optional)" class="tool-input">
+                            <button onclick="loadViews('user_statistics')" class="tool-btn">View Stats</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Celebrity Filmography</h4>
+                            <p class="tool-desc">Celebrity work summary</p>
+                            <input type="number" id="view-celeb-id" placeholder="Celebrity ID (optional)" class="tool-input">
+                            <button onclick="loadViews('celebrity_filmography')" class="tool-btn">View Data</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <h4>Recent Reviews</h4>
+                            <p class="tool-desc">Latest reviews with details</p>
+                            <button onclick="loadViews('recent_reviews')" class="tool-btn">View Reviews</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="section">
-                    <h3>⚡ Complex & Advanced</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('complex_query')">Full SQL Syntax</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('top_rated_by_genre')">Correlated Subquery</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('celebrity_statistics')">Celebrity Stats</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('rating_categories')">CASE Statement</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('genre_comparison')">Genre Analysis</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('temporal_analysis')">Temporal Analysis</button>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <h3>🛠️ Utility Functions</h3>
-                    <div class="operations-grid">
-                        <button class="operation-btn" onclick="runAdvancedQuery('null_handling')">NULL Handling</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('string_functions')">String Functions</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('mathematical_operations')">Math Operations</button>
-                        <button class="operation-btn" onclick="runAdvancedQuery('insert_select_demo')">INSERT SELECT</button>
-                    </div>
-                </div>
-
-                <div id="advancedResult" class="query-result"></div>
+                <!-- Results Display -->
+                <div id="results" class="query-result"></div>
             </div>
         </main>
     </div>
@@ -264,9 +486,9 @@ Example: SELECT * FROM movies WHERE rating > 8.0 ORDER BY rating DESC"></textare
     <!-- Floating SQL Terminal -->
     <div id="sqlTerminal" class="sql-terminal">
         <div class="terminal-header">
-            <span>🔴 Live SQL Terminal</span>
+            <span>Live SQL Terminal</span>
             <div class="terminal-controls">
-                <button onclick="clearTerminal()" title="Clear">🗑️</button>
+                <button onclick="clearTerminal()" title="Clear">-</button>
                 <button onclick="toggleTerminal()" title="Close">✕</button>
             </div>
         </div>

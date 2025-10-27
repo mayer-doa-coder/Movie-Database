@@ -52,8 +52,10 @@ try {
                 echo json_encode(['success' => true, 'data' => $reviews]);
                 
             } else {
-                // Get all recent reviews
+                // Get all recent reviews with optional filters
                 $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 50;
+                $contentType = $_GET['content_type'] ?? '';
+                $minRating = $_GET['min_rating'] ?? '';
                 
                 $sql = "SELECT r.*, u.username, u.full_name,
                     CASE 
@@ -61,11 +63,28 @@ try {
                         WHEN r.content_type = 'tv_series' THEN (SELECT title FROM tv_series WHERE series_id = r.content_id)
                     END as content_title
                     FROM reviews r 
-                    JOIN users u ON r.user_id = u.user_id 
-                    ORDER BY r.created_at DESC 
-                    LIMIT $limit";
+                    JOIN users u ON r.user_id = u.user_id";
                 
-                $reviews = $db->fetchAll($sql);
+                $conditions = [];
+                $params = [];
+                
+                if ($contentType) {
+                    $conditions[] = "r.content_type = ?";
+                    $params[] = $contentType;
+                }
+                
+                if ($minRating) {
+                    $conditions[] = "r.rating >= ?";
+                    $params[] = (float)$minRating;
+                }
+                
+                if (!empty($conditions)) {
+                    $sql .= " WHERE " . implode(" AND ", $conditions);
+                }
+                
+                $sql .= " ORDER BY r.created_at DESC LIMIT $limit";
+                
+                $reviews = $db->fetchAll($sql, $params);
                 echo json_encode(['success' => true, 'data' => $reviews]);
             }
             break;

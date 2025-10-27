@@ -53,6 +53,15 @@ function switchTab(tabName) {
         case 'celebrities':
             loadCelebrities();
             break;
+        case 'users':
+            loadUsers();
+            break;
+        case 'reviews':
+            loadReviews();
+            break;
+        case 'views':
+            loadViews('list');
+            break;
     }
 }
 
@@ -65,6 +74,9 @@ function setupEventListeners() {
     document.getElementById('statusFilter')?.addEventListener('change', loadSeries);
     document.getElementById('celebritySearch')?.addEventListener('input', debounce(loadCelebrities, 500));
     document.getElementById('professionFilter')?.addEventListener('change', loadCelebrities);
+
+    // Users search and filters
+    document.getElementById('userSearch')?.addEventListener('input', debounce(loadUsers, 500));
 
     // Terminal toggle
     document.getElementById('toggleTerminal')?.addEventListener('click', toggleTerminal);
@@ -246,31 +258,37 @@ function showAddMovieForm() {
 
     modal.classList.add('active');
 
-    document.getElementById('addMovieForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData);
+    // Use setTimeout to ensure DOM is ready and get fresh reference
+    setTimeout(() => {
+        const form = document.getElementById('addMovieForm');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData);
 
-        try {
-            const res = await fetch(`${API_BASE}/movies.php`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                try {
+                    const res = await fetch(`${API_BASE}/movies.php`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await res.json();
+                    if (result.success) {
+                        alert('Movie added successfully!');
+                        closeModal();
+                        loadMovies();
+                        loadDashboard();
+                    } else {
+                        alert('Error: ' + result.error);
+                    }
+                } catch (error) {
+                    alert('Error adding movie');
+                }
             });
-
-            const result = await res.json();
-            if (result.success) {
-                alert('Movie added successfully!');
-                closeModal();
-                loadMovies();
-                loadDashboard();
-            } else {
-                alert('Error: ' + result.error);
-            }
-        } catch (error) {
-            alert('Error adding movie');
         }
-    });
+    }, 0);
 }
 
 // TV Series Management
@@ -315,6 +333,7 @@ function displaySeries(series) {
             <p><strong>Status:</strong> ${show.status || 'N/A'}</p>
             <p><strong>Rating:</strong> ⭐ ${show.rating || 'N/A'}/10</p>
             <div class="data-card-actions">
+                <button class="btn btn-primary" onclick="viewSeries(${show.series_id})">View Details</button>
                 <button class="btn btn-danger" onclick="deleteSeries(${show.series_id})">Delete</button>
             </div>
         `;
@@ -342,6 +361,59 @@ async function deleteSeries(id) {
         }
     } catch (error) {
         alert('Error deleting series');
+    }
+}
+
+async function viewSeries(id) {
+    try {
+        const res = await fetch(`${API_BASE}/tv-series.php?id=${id}`);
+        const data = await res.json();
+
+        if (data.success) {
+            const series = data.data;
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modalBody');
+
+            let castHTML = '';
+            if (series.cast && series.cast.length > 0) {
+                castHTML = '<h3 style="margin-top: 20px; color: #2563eb;">Main Cast</h3><div class="cast-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">';
+                series.cast.forEach(c => {
+                    castHTML += `
+                        <div style="padding: 10px; background: #f3f4f6; border-radius: 8px; border-left: 3px solid #2563eb;">
+                            <strong style="color: #1f2937;">${c.name}</strong><br>
+                            <span style="color: #6b7280; font-size: 0.9em;">as ${c.role || 'N/A'}</span><br>
+                            <span style="color: #9ca3af; font-size: 0.85em;">(${c.cast_type})</span>
+                        </div>
+                    `;
+                });
+                castHTML += '</div>';
+            }
+
+            modalBody.innerHTML = `
+                <h2 style="color: #1f2937; margin-bottom: 20px;">${series.title}</h2>
+                <div style="display: grid; gap: 10px;">
+                    <p><strong>Creator:</strong> ${series.creator_name || 'N/A'}</p>
+                    <p><strong>Genre:</strong> ${series.genre || 'N/A'}</p>
+                    <p><strong>First Air Date:</strong> ${series.first_air_date || 'N/A'}</p>
+                    <p><strong>Seasons:</strong> ${series.number_of_seasons || 'N/A'}</p>
+                    <p><strong>Episodes:</strong> ${series.number_of_episodes || 'N/A'}</p>
+                    <p><strong>Status:</strong> <span style="color: ${series.status === 'Ongoing' ? '#10b981' : '#ef4444'}; font-weight: bold;">${series.status || 'N/A'}</span></p>
+                    <p><strong>Language:</strong> ${series.language || 'N/A'}</p>
+                    <p><strong>Country:</strong> ${series.country || 'N/A'}</p>
+                    <p><strong>Rating:</strong> ⭐ ${series.rating || 'N/A'}/10</p>
+                    <p><strong>Total Ratings:</strong> ${series.total_ratings || 0}</p>
+                    ${series.plot_summary ? `<p><strong>Plot:</strong> ${series.plot_summary}</p>` : ''}
+                </div>
+                ${castHTML}
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+    } catch (error) {
+        alert('Error loading series details');
     }
 }
 
@@ -394,31 +466,37 @@ function showAddSeriesForm() {
 
     modal.classList.add('active');
 
-    document.getElementById('addSeriesForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData);
+    // Use setTimeout to ensure DOM is ready and get fresh reference
+    setTimeout(() => {
+        const form = document.getElementById('addSeriesForm');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData);
 
-        try {
-            const res = await fetch(`${API_BASE}/tv-series.php`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                try {
+                    const res = await fetch(`${API_BASE}/tv-series.php`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await res.json();
+                    if (result.success) {
+                        alert('TV Series added successfully!');
+                        closeModal();
+                        loadSeries();
+                        loadDashboard();
+                    } else {
+                        alert('Error: ' + result.error);
+                    }
+                } catch (error) {
+                    alert('Error adding series');
+                }
             });
-
-            const result = await res.json();
-            if (result.success) {
-                alert('TV Series added successfully!');
-                closeModal();
-                loadSeries();
-                loadDashboard();
-            } else {
-                alert('Error: ' + result.error);
-            }
-        } catch (error) {
-            alert('Error adding series');
         }
-    });
+    }, 0);
 }
 
 // Celebrities Management
@@ -528,31 +606,37 @@ function showAddCelebrityForm() {
 
     modal.classList.add('active');
 
-    document.getElementById('addCelebrityForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData);
+    // Use setTimeout to ensure DOM is ready and get fresh reference
+    setTimeout(() => {
+        const form = document.getElementById('addCelebrityForm');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const data = Object.fromEntries(formData);
 
-        try {
-            const res = await fetch(`${API_BASE}/celebrities.php`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                try {
+                    const res = await fetch(`${API_BASE}/celebrities.php`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await res.json();
+                    if (result.success) {
+                        alert('Celebrity added successfully!');
+                        closeModal();
+                        loadCelebrities();
+                        loadDashboard();
+                    } else {
+                        alert('Error: ' + result.error);
+                    }
+                } catch (error) {
+                    alert('Error adding celebrity');
+                }
             });
-
-            const result = await res.json();
-            if (result.success) {
-                alert('Celebrity added successfully!');
-                closeModal();
-                loadCelebrities();
-                loadDashboard();
-            } else {
-                alert('Error: ' + result.error);
-            }
-        } catch (error) {
-            alert('Error adding celebrity');
         }
-    });
+    }, 0);
 }
 
 // SQL Query Executor
@@ -822,7 +906,14 @@ function addQueryToTerminal(query) {
 
 // Modal Management
 function closeModal() {
-    document.getElementById('modal').classList.remove('active');
+    const modal = document.getElementById('modal');
+    const modalBody = document.getElementById('modalBody');
+    modal.style.display = 'none';
+    modal.classList.remove('active');
+    // Clear modal content to prevent event listener conflicts
+    if (modalBody) {
+        modalBody.innerHTML = '';
+    }
 }
 
 // Utility Functions
@@ -851,25 +942,36 @@ async function viewMovie(id) {
 
             let castHTML = '';
             if (movie.cast && movie.cast.length > 0) {
-                castHTML = '<h3>Cast</h3><ul>';
+                castHTML = '<h3 style="margin-top: 20px; color: #2563eb;">Cast & Crew</h3><div class="cast-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px;">';
                 movie.cast.forEach(c => {
-                    castHTML += `<li>${c.name} as ${c.role || 'N/A'} (${c.cast_type})</li>`;
+                    castHTML += `
+                        <div style="padding: 10px; background: #f3f4f6; border-radius: 8px; border-left: 3px solid #2563eb;">
+                            <strong style="color: #1f2937;">${c.name}</strong><br>
+                            <span style="color: #6b7280; font-size: 0.9em;">as ${c.role || 'N/A'}</span><br>
+                            <span style="color: #9ca3af; font-size: 0.85em;">(${c.cast_type})</span>
+                        </div>
+                    `;
                 });
-                castHTML += '</ul>';
+                castHTML += '</div>';
             }
 
             modalBody.innerHTML = `
-                <h2>${movie.title}</h2>
-                <p><strong>Director:</strong> ${movie.director_name || 'N/A'}</p>
-                <p><strong>Genre:</strong> ${movie.genre || 'N/A'}</p>
-                <p><strong>Release Date:</strong> ${movie.release_date || 'N/A'}</p>
-                <p><strong>Duration:</strong> ${movie.duration || 'N/A'} minutes</p>
-                <p><strong>Language:</strong> ${movie.language || 'N/A'}</p>
-                <p><strong>Country:</strong> ${movie.country || 'N/A'}</p>
-                <p><strong>Rating:</strong> ⭐ ${movie.rating || 'N/A'}/10</p>
-                <p><strong>Total Ratings:</strong> ${movie.total_ratings || 0}</p>
-                ${movie.plot_summary ? `<p><strong>Plot:</strong> ${movie.plot_summary}</p>` : ''}
+                <h2 style="color: #1f2937; margin-bottom: 20px;">${movie.title}</h2>
+                <div style="display: grid; gap: 10px;">
+                    <p><strong>Director:</strong> ${movie.director_name || 'N/A'}</p>
+                    <p><strong>Genre:</strong> ${movie.genre || 'N/A'}</p>
+                    <p><strong>Release Date:</strong> ${movie.release_date || 'N/A'}</p>
+                    <p><strong>Duration:</strong> ${movie.duration || 'N/A'} minutes</p>
+                    <p><strong>Language:</strong> ${movie.language || 'N/A'}</p>
+                    <p><strong>Country:</strong> ${movie.country || 'N/A'}</p>
+                    <p><strong>Rating:</strong> ⭐ ${movie.rating || 'N/A'}/10</p>
+                    <p><strong>Total Ratings:</strong> ${movie.total_ratings || 0}</p>
+                    ${movie.plot_summary ? `<p><strong>Plot:</strong> ${movie.plot_summary}</p>` : ''}
+                </div>
                 ${castHTML}
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                </div>
             `;
 
             modal.classList.add('active');
@@ -877,4 +979,917 @@ async function viewMovie(id) {
     } catch (error) {
         alert('Error loading movie details');
     }
+}
+
+// ========== ANALYTICS & DISCOVERY FUNCTIONS ==========
+
+// Helper function to run analytics actions
+async function runAnalytics(action, params = {}) {
+    try {
+        const container = document.getElementById('analyticsResult');
+        container.innerHTML = '<div class="loading">⏳ Processing...</div>';
+        
+        // Build query string
+        const queryParams = new URLSearchParams({ action, ...params });
+        const res = await fetch(`${API_BASE}/analytics.php?${queryParams}`);
+        const data = await res.json();
+        
+        if (data.success) {
+            let content = `
+                <div class="query-info">
+                    <h3>✅ ${data.action}</h3>
+                    <div class="info-badges">
+                        <span class="badge badge-success">Success</span>
+                        ${Array.isArray(data.data) ? `<span class="badge badge-info">${data.data.length} results</span>` : ''}
+                    </div>
+                </div>
+            `;
+            
+            // Handle different data structures
+            if (Array.isArray(data.data)) {
+                content += createTable(data.data);
+            } else if (typeof data.data === 'object') {
+                // Handle complex objects
+                for (const [key, value] of Object.entries(data.data)) {
+                    if (Array.isArray(value)) {
+                        content += `<h4 style="margin-top: 20px;">${key.replace(/_/g, ' ').toUpperCase()}</h4>`;
+                        content += createTable(value);
+                    } else if (typeof value === 'object' && value !== null) {
+                        content += `<h4 style="margin-top: 20px;">${key.replace(/_/g, ' ').toUpperCase()}</h4>`;
+                        content += `<div class="stats-grid">${createStatsCards(value)}</div>`;
+                    }
+                }
+            }
+            
+            container.innerHTML = content;
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            container.innerHTML = `
+                <div class="query-info error">
+                    <h3>❌ Error</h3>
+                    <p>${data.error || 'An error occurred'}</p>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Analytics error:', error);
+        document.getElementById('analyticsResult').innerHTML = `
+            <div class="query-info error">
+                <h3>❌ Error</h3>
+                <p>${error.message}</p>
+            </div>
+        `;
+    }
+}
+
+// Search & Discovery
+function searchContent() {
+    const keyword = document.getElementById('searchKeyword').value;
+    if (!keyword) {
+        alert('Please enter a search keyword');
+        return;
+    }
+    runAnalytics('search_content', { keyword });
+}
+
+function findSimilar() {
+    const movieId = document.getElementById('similarMovieId').value;
+    if (!movieId) {
+        alert('Please enter a movie ID');
+        return;
+    }
+    runAnalytics('find_similar', { movie_id: movieId });
+}
+
+function discoverTopRated() {
+    const minRating = document.getElementById('minRatingDiscover').value;
+    runAnalytics('discover_top_rated', { min_rating: minRating });
+}
+
+function browseByYear() {
+    const startYear = document.getElementById('startYear').value;
+    const endYear = document.getElementById('endYear').value;
+    runAnalytics('browse_by_year', { start_year: startYear, end_year: endYear });
+}
+
+// Filtering
+function filterByGenre() {
+    const genre = document.getElementById('filterGenre').value;
+    if (!genre) {
+        alert('Please select a genre');
+        return;
+    }
+    const sortBy = document.getElementById('sortBy').value;
+    runAnalytics('filter_by_genre', { genre, sort: sortBy, order: 'DESC' });
+}
+
+function filterByRatingRange() {
+    const min = document.getElementById('minRating').value;
+    const max = document.getElementById('maxRating').value;
+    runAnalytics('filter_by_rating_range', { min, max });
+}
+
+function filterMultipleGenres() {
+    const genres = document.getElementById('multipleGenres').value;
+    if (!genres) {
+        alert('Please enter genres (comma-separated)');
+        return;
+    }
+    runAnalytics('filter_multiple_genres', { genres });
+}
+
+// Analytics
+function getGenreStatistics() {
+    runAnalytics('genre_statistics');
+}
+
+function getDirectorPerformance() {
+    runAnalytics('director_performance');
+}
+
+function getContentDistribution() {
+    runAnalytics('content_distribution');
+}
+
+function getRatingDistribution() {
+    runAnalytics('rating_distribution');
+}
+
+// Comparisons
+function compareGenres() {
+    const genre1 = document.getElementById('genre1').value;
+    const genre2 = document.getElementById('genre2').value;
+    runAnalytics('compare_genres', { genre1, genre2 });
+}
+
+function compareMoviesVsSeries() {
+    runAnalytics('movies_vs_series');
+}
+
+// Recommendations
+function getRecommendations() {
+    const userId = document.getElementById('userIdRec').value || 1;
+    runAnalytics('get_recommendations', { user_id: userId });
+}
+
+function getTrendingNow() {
+    runAnalytics('trending_now');
+}
+
+function getHiddenGems() {
+    runAnalytics('hidden_gems');
+}
+
+// Cast & Crew
+function getMovieWithCast() {
+    const movieId = document.getElementById('movieIdCast').value;
+    if (!movieId) {
+        alert('Please enter a movie ID');
+        return;
+    }
+    runAnalytics('movie_with_cast', { movie_id: movieId });
+}
+
+function getCelebrityFilmography() {
+    const celebId = document.getElementById('celebrityIdFilm').value;
+    if (!celebId) {
+        alert('Please enter a celebrity ID');
+        return;
+    }
+    runAnalytics('celebrity_filmography', { celebrity_id: celebId });
+}
+
+// ========================================
+// USERS MANAGEMENT
+// ========================================
+
+async function loadUsers() {
+    try {
+        const search = document.getElementById('userSearch')?.value || '';
+        const country = document.getElementById('countryFilter')?.value || '';
+        
+        let url = `${API_BASE}/users.php?`;
+        if (search) url += `search=${encodeURIComponent(search)}&`;
+        if (country) url += `country=${encodeURIComponent(country)}&`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success) {
+            displayUsers(data.data);
+        } else {
+            console.error('Error loading users:', data.error);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function displayUsers(users) {
+    const container = document.getElementById('usersList');
+    if (!users || users.length === 0) {
+        container.innerHTML = '<p class="no-data">No users found</p>';
+        return;
+    }
+    
+    container.innerHTML = users.map(user => `
+        <div class="data-card">
+            <div class="card-header">
+                <h3>${user.username}</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Full Name:</strong> ${user.full_name || 'N/A'}</p>
+                <p><strong>Email:</strong> ${user.email}</p>
+                <p><strong>Country:</strong> ${user.country || 'N/A'}</p>
+                <p><strong>Joined:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+                <div class="user-stats" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+                    <p style="margin: 5px 0;"><strong>Reviews:</strong> ${user.total_reviews || 0}</p>
+                    <p style="margin: 5px 0;"><strong>Watchlist:</strong> ${user.watchlist_count || 0}</p>
+                    <p style="margin: 5px 0;"><strong>Favorites:</strong> ${user.favorites_count || 0}</p>
+                    <p style="margin: 5px 0;"><strong>Followers:</strong> ${user.followers || 0} | <strong>Following:</strong> ${user.following || 0}</p>
+                </div>
+            </div>
+            <div class="card-actions">
+                <button class="btn btn-sm btn-info" onclick="viewUserDetails(${user.user_id})">View Details</button>
+                <button class="btn btn-sm btn-warning" onclick="editUser(${user.user_id})">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteUser(${user.user_id})">Delete</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function showAddUserForm() {
+    const form = `
+        <h2>Add New User</h2>
+        <form id="addUserForm" class="modal-form">
+            <div class="form-group">
+                <label>Username *</label>
+                <input type="text" name="username" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" name="email" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Password *</label>
+                <input type="password" name="password" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="full_name" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Country</label>
+                <select name="country" class="form-input">
+                    <option value="">Select Country</option>
+                    <option value="USA">USA</option>
+                    <option value="UK">UK</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Bangladesh">Bangladesh</option>
+                    <option value="India">India</option>
+                    <option value="Australia">Australia</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Date of Birth</label>
+                <input type="date" name="date_of_birth" class="form-input">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Add User</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </form>
+    `;
+    
+    document.getElementById('modalBody').innerHTML = form;
+    document.getElementById('modal').style.display = 'flex';
+    
+    // Use setTimeout to ensure DOM is ready and get fresh reference
+    setTimeout(() => {
+        const addUserForm = document.getElementById('addUserForm');
+        if (addUserForm) {
+            addUserForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const userData = Object.fromEntries(formData);
+                
+                try {
+                    const response = await fetch(`${API_BASE}/users.php`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(userData)
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('User added successfully!');
+                        closeModal();
+                        loadUsers();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                } catch (error) {
+                    alert('Error adding user: ' + error.message);
+                }
+            });
+        }
+    }, 0);
+}
+
+async function viewUserDetails(userId) {
+    try {
+        const response = await fetch(`${API_BASE}/users.php?id=${userId}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            const user = data.data;
+            const details = `
+                <h2>User Details</h2>
+                <div class="user-details">
+                    <p><strong>Username:</strong> ${user.username}</p>
+                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Full Name:</strong> ${user.full_name || 'N/A'}</p>
+                    <p><strong>Country:</strong> ${user.country || 'N/A'}</p>
+                    <p><strong>Date of Birth:</strong> ${user.date_of_birth || 'N/A'}</p>
+                    <p><strong>Bio:</strong> ${user.bio || 'N/A'}</p>
+                    <p><strong>Joined:</strong> ${new Date(user.created_at).toLocaleString()}</p>
+                    <p><strong>Last Login:</strong> ${user.last_login ? new Date(user.last_login).toLocaleString() : 'Never'}</p>
+                    <p><strong>Status:</strong> ${user.is_active ? 'Active' : 'Inactive'}</p>
+                    
+                    <h3>Statistics</h3>
+                    <p><strong>Total Reviews:</strong> ${user.stats.total_reviews}</p>
+                    <p><strong>Watchlist:</strong> ${user.stats.watchlist_count}</p>
+                    <p><strong>Favorites:</strong> ${user.stats.favorites_count}</p>
+                    <p><strong>Followers:</strong> ${user.stats.followers}</p>
+                    <p><strong>Following:</strong> ${user.stats.following}</p>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                </div>
+            `;
+            
+            document.getElementById('modalBody').innerHTML = details;
+            document.getElementById('modal').style.display = 'flex';
+        }
+    } catch (error) {
+        alert('Error loading user details: ' + error.message);
+    }
+}
+
+async function editUser(userId) {
+    try {
+        const response = await fetch(`${API_BASE}/users.php?id=${userId}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            const user = data.data;
+            const form = `
+                <h2>Edit User</h2>
+                <form id="editUserForm" class="modal-form">
+                    <input type="hidden" name="user_id" value="${user.user_id}">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" value="${user.username}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" value="${user.email}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="full_name" value="${user.full_name || ''}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input type="text" name="country" value="${user.country || ''}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth</label>
+                        <input type="date" name="date_of_birth" value="${user.date_of_birth || ''}" class="form-input">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Update User</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            `;
+            
+            document.getElementById('modalBody').innerHTML = form;
+            document.getElementById('modal').style.display = 'block';
+            
+            // Use setTimeout to ensure DOM is ready and get fresh reference
+            setTimeout(() => {
+                const editUserForm = document.getElementById('editUserForm');
+                if (editUserForm) {
+                    editUserForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.target);
+                        const userData = Object.fromEntries(formData);
+                        
+                        try {
+                            const response = await fetch(`${API_BASE}/users.php`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(userData)
+                            });
+                            
+                            const data = await response.json();
+                            if (data.success) {
+                                alert('User updated successfully!');
+                                closeModal();
+                                loadUsers();
+                            } else {
+                                alert('Error: ' + data.error);
+                            }
+                        } catch (error) {
+                            alert('Error updating user: ' + error.message);
+                        }
+                    });
+                }
+            }, 0);
+        }
+    } catch (error) {
+        alert('Error loading user: ' + error.message);
+    }
+}
+
+async function deleteUser(userId) {
+    if (!confirm('Are you sure you want to delete this user? This will also delete all their reviews, watchlist, and favorites.')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/users.php`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('User deleted successfully!');
+            loadUsers();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        alert('Error deleting user: ' + error.message);
+    }
+}
+
+// ========================================
+// REVIEWS MANAGEMENT
+// ========================================
+
+async function loadReviews() {
+    try {
+        const contentType = document.getElementById('reviewContentType')?.value || '';
+        const minRating = document.getElementById('reviewRatingFilter')?.value || '';
+        
+        let url = `${API_BASE}/reviews.php?`;
+        if (contentType) url += `content_type=${contentType}&`;
+        if (minRating) url += `min_rating=${minRating}&`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success) {
+            displayReviews(data.data);
+        } else {
+            console.error('Error loading reviews:', data.error);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function displayReviews(reviews) {
+    const container = document.getElementById('reviewsList');
+    if (!reviews || reviews.length === 0) {
+        container.innerHTML = '<p class="no-data">No reviews found</p>';
+        return;
+    }
+    
+    container.innerHTML = reviews.map(review => `
+        <div class="data-card">
+            <div class="card-header">
+                <h3>${review.review_title || 'Review'}</h3>
+                <span class="badge badge-primary">★ ${review.rating}/10</span>
+            </div>
+            <div class="card-body">
+                <p><strong>By:</strong> ${review.username}${review.full_name ? ` (${review.full_name})` : ''}</p>
+                <p><strong>Content:</strong> ${review.content_title || 'Unknown'} <span class="badge ${review.content_type === 'movie' ? 'badge-success' : 'badge-warning'}">${review.content_type === 'movie' ? 'Movie' : 'TV Series'}</span></p>
+                <p class="review-text"><strong>Review:</strong> ${review.review_text || 'No text provided'}</p>
+                ${review.is_spoiler == 1 ? '<p><span class="badge badge-danger">⚠ Contains Spoilers</span></p>' : ''}
+                <p class="review-date"><strong>Posted:</strong> ${new Date(review.created_at).toLocaleString()}</p>
+            </div>
+            <div class="card-actions">\
+                <button class="btn btn-sm btn-warning" onclick="editReview(${review.review_id})">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="deleteReview(${review.review_id})">Delete</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function showAddReviewForm() {
+    const form = `
+        <h2>Add New Review</h2>
+        <form id="addReviewForm" class="modal-form">
+            <div class="form-group">
+                <label>User ID *</label>
+                <input type="number" name="user_id" required class="form-input" value="1">
+            </div>
+            <div class="form-group">
+                <label>Content Type *</label>
+                <select name="content_type" required class="form-input">
+                    <option value="movie">Movie</option>
+                    <option value="tv_series">TV Series</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Content ID *</label>
+                <input type="number" name="content_id" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Rating (0-10) *</label>
+                <input type="number" name="rating" min="0" max="10" step="0.1" required class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Review Title</label>
+                <input type="text" name="review_title" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Review Text</label>
+                <textarea name="review_text" rows="4" class="form-input"></textarea>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="is_spoiler" value="1">
+                    Contains Spoilers
+                </label>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Add Review</button>
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </form>
+    `;
+    
+    document.getElementById('modalBody').innerHTML = form;
+    document.getElementById('modal').style.display = 'block';
+    
+    // Use setTimeout to ensure DOM is ready and get fresh reference
+    setTimeout(() => {
+        const addReviewForm = document.getElementById('addReviewForm');
+        if (addReviewForm) {
+            addReviewForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const reviewData = Object.fromEntries(formData);
+                reviewData.is_spoiler = formData.get('is_spoiler') ? 1 : 0;
+                
+                try {
+                    const response = await fetch(`${API_BASE}/reviews.php`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(reviewData)
+                    });
+                    
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Review added successfully!');
+                        closeModal();
+                        loadReviews();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                } catch (error) {
+                    alert('Error adding review: ' + error.message);
+                }
+            });
+        }
+    }, 0);
+}
+
+async function editReview(reviewId) {
+    try {
+        const response = await fetch(`${API_BASE}/reviews.php?action=getAll`);
+        const data = await response.json();
+        
+        if (data.success) {
+            const review = data.data.find(r => r.review_id === reviewId);
+            if (!review) {
+                alert('Review not found');
+                return;
+            }
+            
+            const form = `
+                <h2>Edit Review</h2>
+                <form id="editReviewForm" class="modal-form">
+                    <input type="hidden" name="review_id" value="${review.review_id}">
+                    <input type="hidden" name="user_id" value="${review.user_id}">
+                    <input type="hidden" name="content_type" value="${review.content_type}">
+                    <input type="hidden" name="content_id" value="${review.content_id}">
+                    <div class="form-group">
+                        <label>Rating (0-10) *</label>
+                        <input type="number" name="rating" min="0" max="10" step="0.1" value="${review.rating}" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Review Title</label>
+                        <input type="text" name="review_title" value="${review.review_title || ''}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Review Text</label>
+                        <textarea name="review_text" rows="4" class="form-input">${review.review_text || ''}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="is_spoiler" value="1" ${review.is_spoiler ? 'checked' : ''}>
+                            Contains Spoilers
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Update Review</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            `;
+            
+            document.getElementById('modalBody').innerHTML = form;
+            document.getElementById('modal').style.display = 'block';
+            
+            // Use setTimeout to ensure DOM is ready and get fresh reference
+            setTimeout(() => {
+                const editReviewForm = document.getElementById('editReviewForm');
+                if (editReviewForm) {
+                    editReviewForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.target);
+                        const reviewData = Object.fromEntries(formData);
+                        reviewData.is_spoiler = formData.get('is_spoiler') ? 1 : 0;
+                        
+                        try {
+                            const response = await fetch(`${API_BASE}/reviews.php`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(reviewData)
+                            });
+                            
+                            const data = await response.json();
+                            if (data.success) {
+                                alert('Review updated successfully!');
+                                closeModal();
+                                loadReviews();
+                            } else {
+                                alert('Error: ' + data.error);
+                            }
+                        } catch (error) {
+                            alert('Error updating review: ' + error.message);
+                        }
+                    });
+                }
+            }, 0);
+        }
+    } catch (error) {
+        alert('Error loading review: ' + error.message);
+    }
+}
+
+async function deleteReview(reviewId) {
+    if (!confirm('Are you sure you want to delete this review?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE}/reviews.php`, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ review_id: reviewId })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('Review deleted successfully!');
+            loadReviews();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        alert('Error deleting review: ' + error.message);
+    }
+}
+
+// Timeline & Trends
+function getReleaseTimeline() {
+    runAnalytics('release_timeline');
+}
+
+function getDecadeAnalysis() {
+    runAnalytics('decade_analysis');
+}
+
+// Views Functions
+async function loadViews(viewName = 'list') {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '<div class="loading">Loading views...</div>';
+    
+    try {
+        let url = `${API_BASE}/views.php?action=${viewName}`;
+        
+        // Add parameters based on view
+        if (viewName === 'user_statistics') {
+            const userId = document.getElementById('view-user-id')?.value;
+            if (userId) url += `&user_id=${userId}`;
+        } else if (viewName === 'celebrity_filmography') {
+            const celebId = document.getElementById('view-celeb-id')?.value;
+            if (celebId) url += `&celebrity_id=${celebId}`;
+        } else {
+            const limit = document.getElementById('view-limit')?.value || 20;
+            url += `&limit=${limit}`;
+        }
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success) {
+            displayViewResults(data, viewName);
+        } else {
+            resultsDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+        }
+    } catch (error) {
+        resultsDiv.innerHTML = `<div class="error">Error loading view: ${error.message}</div>`;
+    }
+}
+
+function displayViewResults(data, viewName) {
+    const resultsDiv = document.getElementById('results');
+    let html = `<div class="result-card">`;
+    
+    if (viewName === 'list') {
+        html += `<h3>Available Database Views</h3>`;
+        html += `<div class="info-text">${data.message}</div>`;
+        html += `<div class="view-list">`;
+        for (const [key, description] of Object.entries(data.views)) {
+            html += `
+                <div class="view-item" onclick="loadViews('${key}')">
+                    <strong>${key.replace(/_/g, ' ').toUpperCase()}</strong>
+                    <p>${description}</p>
+                </div>`;
+        }
+        html += `</div>`;
+    } else {
+        html += `<h3>${data.view || 'View Results'}</h3>`;
+        html += `<p class="info-text">${data.description}</p>`;
+        html += `<p><strong>Total Records:</strong> ${data.count || 1}</p>`;
+        
+        if (Array.isArray(data.data)) {
+            html += `<div class="table-container"><table><thead><tr>`;
+            const headers = Object.keys(data.data[0] || {});
+            headers.forEach(header => {
+                html += `<th>${header.replace(/_/g, ' ').toUpperCase()}</th>`;
+            });
+            html += `</tr></thead><tbody>`;
+            
+            data.data.forEach(row => {
+                html += `<tr>`;
+                headers.forEach(header => {
+                    let value = row[header];
+                    if (value === null) value = 'N/A';
+                    if (header.includes('date') && value && value !== 'N/A') {
+                        value = new Date(value).toLocaleDateString();
+                    }
+                    html += `<td>${value}</td>`;
+                });
+                html += `</tr>`;
+            });
+            html += `</tbody></table></div>`;
+        } else if (data.data) {
+            html += `<div class="data-display">`;
+            for (const [key, value] of Object.entries(data.data)) {
+                html += `<div class="data-row">
+                    <strong>${key.replace(/_/g, ' ').toUpperCase()}:</strong> ${value || 'N/A'}
+                </div>`;
+            }
+            html += `</div>`;
+        }
+    }
+    
+    html += `</div>`;
+    resultsDiv.innerHTML = html;
+}
+
+// Set Operations (INTERSECT/MINUS) Functions
+async function loadSetOperations(operation = 'list') {
+    const resultsDiv = document.getElementById('analyticsResult');
+    resultsDiv.innerHTML = '<div class="loading">Loading set operations...</div>';
+    
+    try {
+        let url = `${API_BASE}/set-operations.php?operation=${operation}`;
+        
+        // Add parameters based on operation
+        if (operation.includes('user_common')) {
+            const user1 = document.getElementById('set-user1-id')?.value || 1;
+            const user2 = document.getElementById('set-user2-id')?.value || 2;
+            url += `&user1_id=${user1}&user2_id=${user2}`;
+        } else if (operation.includes('high_rated')) {
+            const genre = document.getElementById('set-genre')?.value || 'Action';
+            const rating = document.getElementById('set-rating')?.value || 8.0;
+            url += `&genre=${genre}&min_rating=${rating}`;
+        } else if (operation.includes('genre_year')) {
+            const genre = document.getElementById('set-genre-year')?.value || 'Drama';
+            const startYear = document.getElementById('set-start-year')?.value || 2010;
+            const endYear = document.getElementById('set-end-year')?.value || 2020;
+            url += `&genre=${genre}&start_year=${startYear}&end_year=${endYear}`;
+        } else if (operation.includes('not_watched')) {
+            const userId = document.getElementById('set-user-id')?.value || 1;
+            url += `&user_id=${userId}`;
+        } else if (operation.includes('watchlist_not_favorites')) {
+            const userId = document.getElementById('set-user-id-wl')?.value || 1;
+            url += `&user_id=${userId}`;
+        }
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success) {
+            displaySetOperationResults(data, operation);
+        } else {
+            resultsDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+        }
+    } catch (error) {
+        resultsDiv.innerHTML = `<div class="error">Error loading set operation: ${error.message}</div>`;
+    }
+}
+
+function displaySetOperationResults(data, operation) {
+    const resultsDiv = document.getElementById('analyticsResult');
+    let html = `<div class="result-card">`;
+    
+    if (operation === 'list') {
+        html += `<h3>Available Set Operations (INTERSECT & MINUS)</h3>`;
+        html += `<div class="info-text">${data.message}</div>`;
+        html += `<div class="set-ops-list">`;
+        
+        html += `<h4>INTERSECT Operations (A AND B)</h4>`;
+        html += `<div class="view-item" onclick="loadSetOperations('intersect_high_rated')">
+            <strong>INTERSECT: High Rated by Genre</strong>
+            <p>Movies in specific genre AND high rating</p>
+        </div>`;
+        html += `<div class="view-item" onclick="loadSetOperations('intersect_user_common')">
+            <strong>INTERSECT: Common Watchlist Items</strong>
+            <p>Content in both users' watchlists</p>
+        </div>`;
+        html += `<div class="view-item" onclick="loadSetOperations('intersect_genre_year')">
+            <strong>INTERSECT: Genre and Year Range</strong>
+            <p>Movies in genre AND specific year range</p>
+        </div>`;
+        
+        html += `<h4>MINUS Operations (A NOT IN B)</h4>`;
+        html += `<div class="view-item" onclick="loadSetOperations('minus_all_not_watched')">
+            <strong>MINUS: Unwatched Movies</strong>
+            <p>All movies MINUS user's watchlist</p>
+        </div>`;
+        html += `<div class="view-item" onclick="loadSetOperations('minus_watchlist_not_favorites')">
+            <strong>MINUS: Watchlist Not Favorites</strong>
+            <p>User's watchlist MINUS favorites</p>
+        </div>`;
+        html += `<div class="view-item" onclick="loadSetOperations('minus_movies_no_reviews')">
+            <strong>MINUS: Movies Without Reviews</strong>
+            <p>All movies MINUS movies with reviews</p>
+        </div>`;
+        
+        html += `</div>`;
+    } else {
+        const opType = data.operation === 'INTERSECT' ? '∩' : '−';
+        html += `<h3>${opType} ${data.operation}: ${data.description}</h3>`;
+        html += `<p><strong>Total Results:</strong> ${data.count}</p>`;
+        
+        if (data.data && data.data.length > 0) {
+            html += `<div class="table-container"><table><thead><tr>`;
+            const headers = Object.keys(data.data[0]);
+            headers.forEach(header => {
+                html += `<th>${header.replace(/_/g, ' ').toUpperCase()}</th>`;
+            });
+            html += `</tr></thead><tbody>`;
+            
+            data.data.forEach(row => {
+                html += `<tr>`;
+                headers.forEach(header => {
+                    let value = row[header];
+                    if (value === null) value = 'N/A';
+                    if (header.includes('date') && value && value !== 'N/A') {
+                        value = new Date(value).toLocaleDateString();
+                    }
+                    html += `<td>${value}</td>`;
+                });
+                html += `</tr>`;
+            });
+            html += `</tbody></table></div>`;
+        } else {
+            html += `<p class="info-text">No results found for this operation.</p>`;
+        }
+    }
+    
+    html += `</div>`;
+    resultsDiv.innerHTML = html;
 }
